@@ -7,6 +7,9 @@
 	<link rel="stylesheet"  href="/static/jquerymobile/jquery.mobile-1.0.1.min.css" />
 	<script src="/static/jquerymobile/jquery.js"></script>
 	<script src="/static/jquerymobile/jquery.mobile-1.0.1.min.js"></script>
+	<script src="/static/js/underscore.js"></script>
+	<script src="/static/js/backbone.js"></script>
+	<script src="/static/js/app.js"></script>
 </head> 
 <body> 
 <div data-role="page" id="nowplaying">
@@ -58,8 +61,7 @@
 	<div data-role="content">
 		<div class="content-primary">
 			<nav>
-				<ul data-role="listview" data-inset="true" data-filter="true" data-placeholder="Filter track" data-dividertheme="b">
-					<li data-role="list-divider">Search</li>
+				<ul id="searchlist" data-role="listview" data-inset="true" data-filter="true" data-placeholder="Filter track" data-dividertheme="b">
 					<li><a href="docs/pages/index.html">Arjona 1</a></li>
 					<li><a href="docs/api/themes.html">Arjona 2</a></li>
 				</ul>
