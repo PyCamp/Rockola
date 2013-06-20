@@ -1,5 +1,7 @@
 from flask import Flask
 from flask import json
+from flask import url_for
+from flask import redirect
 from flask import render_template
 from flask.ext.sse import sse
 from flask.ext.sse import send_event
@@ -17,6 +19,7 @@ def home():
 @app.route('/songs/list')
 def list_songs():
     """Returns the list from the available songs."""
+
     songs = [
         {'id': 1,
         'title': 'Smoke on the Water',
@@ -37,7 +40,10 @@ def list_songs():
     ]
 
     data = dict(message=songs)
-    send_event("songslist", json.dumps(data), channel='rockola')
+    EVENT_ID = "list_songs"
+    send_event(EVENT_ID, json.dumps(data), channel='rockola')
+
+    return redirect(url_for('home'))
 
 
 @app.route('/songs/add')
