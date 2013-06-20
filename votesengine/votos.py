@@ -8,21 +8,21 @@ class VoteManager(object):
 		self.votos = dict()
 		self.tracks = list() # Lista de IDs de track, en orden según aparición
 
-	def add_votes(self, json_dict):
-		""" Genera un diccionario con la cantidad de votos negativos y
+	def add_vote(self, voto):
+		""" Regenera el diccionario con la cantidad de votos negativos y
 		positivos de cada track_id """
-		for voto in json_dict:
-			track_id = voto['id_track'] 
-			sessid = voto['id_sesion'] 
-			calificacion = int(voto['vote']) 
-			if not self.votos.has_key(track_id):
-				self.votos[track_id] = [set([]), set([])]
-				self.tracks.append(track_id)
-			lista = self.votos[track_id]
-			if sessid in lista[not calificacion]:
-				# Si votó por lo contrario, borramos el voto anterior
-				lista[not calificacion].remove(sessid)
-			lista[calificacion].add(sessid)
+		track_id = voto['id_track'] 
+		sessid = voto['id_sesion'] 
+		calificacion = voto['operation']
+		calificacion = 1 if calificacion=='votarpositivo' else 0
+		if not self.votos.has_key(track_id):
+			self.votos[track_id] = [set([]), set([])]
+			self.tracks.append(track_id)
+		lista = self.votos[track_id]
+		if sessid in lista[not calificacion]:
+			# Si votó por lo contrario, borramos el voto anterior
+			lista[not calificacion].remove(sessid)
+		lista[calificacion].add(sessid)
 
 	def votes(self):
 		""" Retorna un diccionario con la cantidad de votos (puede ser
