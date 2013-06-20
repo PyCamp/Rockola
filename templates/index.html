@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Rockola</title>
+	<link rel="stylesheet"  href="/static/jquerymobile/jquery.mobile-1.0.1.min.css" />
+	<script src="/static/jquerymobile/jquery.js"></script>
+	<script src="/static/jquerymobile/jquery.mobile-1.0.1.min.js"></script>
+</head> 
+<body> 
+<div data-role="page" id="nowplaying">
+  <div data-role="header">
+    <h1 data-role="title">Now playing</h1>
+  </div>
+	<div data-role="content">
+		<div class="content-primary">
+			<nav>
+				<ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="b">
+					<li data-role="list-divider">Rockola playlist</li>
+					<li><a href="docs/pages/index.html">Arjona 1</a></li>
+					<li><a href="docs/api/themes.html">Arjona 2</a></li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+  <div data-id="footer" data-position="fixed" data-role="footer">
+    <div data-role="navbar">
+      <ul>
+        <li><a data-icon="grid" class="ui-btn-active" href="#nowplaying">Now playing</a></li>
+        <li><a data-icon="grid" href="#latests">latests</a></li>
+        <li><a data-icon="search" href="#search">search</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div data-role="page" id="latests" >
+  <div data-role="header">
+    <h1 data-role="title">Latests</h1>
+  </div>
+  <div data-role="content">
+
+  </div>
+  <div data-id="footer" data-position="fixed" data-role="footer">
+    <div data-role="navbar">
+      <ul>
+        <li><a data-icon="grid" href="#nowplaying">Now playing</a></li>
+        <li><a data-icon="grid" href="#latests" class="ui-btn-active">latests</a></li>
+        <li><a data-icon="search" href="#search">search</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div data-role="page" id="search">
+  <div data-role="header">
+    <h1 data-role="title">Search</h1>
+  </div>
+	<div data-role="content">
+		<div class="content-primary">
+			<nav>
+				<ul data-role="listview" data-inset="true" data-filter="true" data-placeholder="Filter track" data-dividertheme="b">
+					<li data-role="list-divider">Search</li>
+					<li><a href="docs/pages/index.html">Arjona 1</a></li>
+					<li><a href="docs/api/themes.html">Arjona 2</a></li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+  <div data-id="footer" data-position="fixed" data-role="footer">
+    <div data-role="navbar">
+      <ul>
+        <li><a data-icon="grid" href="#nowplaying">Now playing</a></li>
+        <li><a data-icon="grid" href="#latests">latests</a></li>
+        <li><a data-icon="search" href="#search" class="ui-btn-active">search</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+</body>
+</html>
