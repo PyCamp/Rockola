@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
-import time
+import json
 import random
+import time
+
 
 sessions = ['aaa', 'bbb', 'ccc', 'ddd', 'eee']
 operations = ['votarpositivo', 'votarnegativo']
@@ -18,4 +20,4 @@ def generate_votes():
         'timestamp': time.time(),
         'id_track': random.randrange(10),
         'operation': random.choice(operations)}
-    return vote_dict
+    return json.dumps(vote_dict)
