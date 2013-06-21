@@ -67,32 +67,32 @@ def update_list():
     lists = json.loads(request.args['data'])
     top, last = lists['top'], lists['last']
 
-
     ids = set([track_id for track_id, _ in top])
     ids |= set([track_id for track_id, _ in last])
 
     tracks_info = shiva.get_tracks(ids)
 
-    for i, (track_id, votos) in enumerate(top):
-        info = tracks_info[track_id]
-        top[i][0] = {'id' : track_id,
-                     'title': info['title'],
-                     'artist': info['artist']}
+    def _fill_track_data(tracks):
+        response = []
+        for track_id, votos in top:
+            info = tracks_info[track_id]
+            response.append({'id' : track_id,
+                             'title': info['title'],
+                             'artist': info['artist'],
+                             'votes': votos})
 
-    for i, (track_id, votos) in enumerate(last):
-        info = tracks_info[track_id]
-        last[0] = {'id' : track_id,
-                     'title': info['title'],
-                     'artist': info['artist']}
+    response = {'top': _fill_track_data(top),
+                'last': _fill_track_data(last)}
 
-    msg_to_ui = {'top': top, 'last': last}
-    qm.send(flaskq, msg_to_ui)
+    qm.send(flaskq, response)
 
     return "ok"
 
 @app.route('/newsong')
 def new_song():
     """push new song in the player"""
+    request.args['data']
+
 
 @app.route('/vote')
 def vote():
