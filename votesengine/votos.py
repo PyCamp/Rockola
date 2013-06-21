@@ -20,7 +20,7 @@ class VoteManager(object):
         sessid = voto['id_sesion']
         calificacion = voto['operation']
         calificacion = 1 if calificacion == 'votarpositivo' else 0
-        if not self.votos.has_key(track_id):
+        if track_id not in self.votos:
             self.votos[track_id] = [set([]), set([])]
             self.tracks.append(track_id)
             self.tracks = self.tracks[-10:]  # Conservo los últimos elementos
@@ -72,7 +72,6 @@ class VoteManager(object):
         de votos negativos, de lo contrario False"""
         lista = self.votos[self.head]
         cociente = len(lista[0]) / len(lista[1])  # negativos/positivos
-        print cociente
         if cociente >= COCIENTE_CAMBIOTEMA:
             #self.endofsong()
             #self.head = self.votos()[0][0]

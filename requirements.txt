@@ -4,7 +4,6 @@ MarkupSafe==0.18
 Werkzeug==0.9.1
 argparse==1.2.1
 distribute==0.6.24
-flask-sse==0.1
 gevent==0.13.8
 greenlet==0.4.1
 gunicorn==0.17.4
@@ -14,4 +13,4 @@ redis==2.7.6
 requests==1.2.3
 sse==1.2
 wsgiref==0.1.2
-cyclone-sse=0.7.5
+cyclone-sse==0.7.5

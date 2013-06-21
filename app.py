@@ -1,17 +1,23 @@
+
+from time import time
 from flask import json
 from flask import Flask, request
 from flask import render_template
+from msgs_queue import queue_manager
 from player import ShivaClient, VLCController
 from msgs_queue.receive_list_process import ReceiveListProcess
 app = Flask(__name__)
 app.debug = True
-#app.register_blueprint(sse, url_prefix='/messages')
+
 
 shiva = ShivaClient()
 vlc = VLCController()
 rl = ReceiveListProcess()
 rl.run()
 
+
+qm = queue_manager.Queue()
+cmdq = queue_manager.get_queue_name('control')
 
 @app.route('/')
 def home():
@@ -41,7 +47,7 @@ def update_latest_songs():
     ]
 
     data = dict(message=songs)
-    send_event("latest", json.dumps(data), channel='rockola')
+    #send_event("latest", json.dumps(data), channel='rockola')
     return ""
 
 
@@ -87,6 +93,19 @@ def update_list():
 @app.route('/newsong')
 def new_song():
     """push new song in the player"""
+
+@app.route('/vote')
+def vote():
+    id_track = request.args['track_id']
+    operation = request.args['operation']
+    timestamp = int(time())
+    id_session = request.remote_addr
+    keys = ['id_track', 'operation', 'timestamp', 'id_session']
+    values = [id_track, operation, timestamp, id_session]
+    data = dict(zip(keys, values))
+    msg = json.dumps(data)
+    qm.send(cmdq, msg)
+    return "ok"
 
 if __name__ == '__main__':
     app.run('0.0.0.0')
