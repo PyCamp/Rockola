@@ -91,6 +91,7 @@ class VoteManager(object):
             track_id = self.top()[0][0]
         try:
             del(self.votos[track_id])
+            self.tracks.remove(track_id)
         except KeyError:
             pass
         else:
