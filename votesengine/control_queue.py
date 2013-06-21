@@ -10,7 +10,7 @@ SERVER_IP = '192.168.10.58'
 CONN_PARAM = pika.ConnectionParameters(host=SERVER_IP)
 
 
-class Publisher():
+class Publisher(object):
     def __init__(self):
         # We connect to the server in a blocking way.
         connection = pika.BlockingConnection(CONN_PARAM)
@@ -20,17 +20,17 @@ class Publisher():
         # One can call this method infinite times. Only 1 queue is created.
         self.channel.queue_declare(queue=NAME)
 
-    def send_command(self, cmd):
+    def send(self, cmd):
         self.channel.basic_publish(exchange='', routing_key=NAME,
                                    body=cmd)
 
 
-class Reciever():
+class Receiver(object):
     def __init__(self):
         connection = pika.BlockingConnection(CONN_PARAM)
         self.channel = connection.channel()
 
-    def recieve(self):
+    def receive(self):
         method_frame = None
         while not method_frame:
             method_frame, header_frame, body = self.channel.basic_get(NAME)
