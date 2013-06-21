@@ -15,8 +15,8 @@ def home():
 
 
 @app.route('/songs')
-def list_songs():
-    """Returns the list from the available songs."""
+def update_latest_songs():
+    """List latest added songs."""
     songs = [
         {'id': 1,
         'title': 'Smoke on the Water',
@@ -37,18 +37,14 @@ def list_songs():
     ]
 
     data = dict(message=songs)
-    send_event("songslist", json.dumps(data), channel='rockola')
+    send_event("latest", json.dumps(data), channel='rockola')
+    return ""
 
 
 @app.route('/songs/add')
 def add_song():
     """Add a song to be reproduced."""
     return render_template('pong!')
-
-
-@app.route('/songs/latest')
-def list_latest_songs():
-    """List latest added songs."""
 
 
 if __name__ == '__main__':
