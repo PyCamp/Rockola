@@ -14,7 +14,7 @@ def home():
     return render_template('index.html')
 
 
-@app.route('/songs/list')
+@app.route('/songs')
 def list_songs():
     """Returns the list from the available songs."""
     songs = [
@@ -53,4 +53,3 @@ def list_latest_songs():
 
 if __name__ == '__main__':
     app.run('0.0.0.0')
-
