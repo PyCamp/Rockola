@@ -1,12 +1,9 @@
-import json
-from flask import Flask, request
 from flask import json
-from flask import url_for
-from flask import redirect
+from flask import Flask, request
 from flask import render_template
-from flask.ext.sse import sse
-from flask.ext.sse import send_event
 from player import ShivaClient, VLCController
+from rabbit_sse import sse
+from rabbit_sse import send_event
 
 app = Flask(__name__)
 app.debug = True
@@ -20,10 +17,9 @@ def home():
     return render_template('index.html')
 
 
-@app.route('/songs/list')
-def list_songs():
-    """Returns the list from the available songs."""
-
+@app.route('/songs')
+def update_latest_songs():
+    """List latest added songs."""
     songs = [
         {'id': 1,
         'title': 'Smoke on the Water',
@@ -44,10 +40,8 @@ def list_songs():
     ]
 
     data = dict(message=songs)
-    EVENT_ID = "list_songs"
-    send_event(EVENT_ID, json.dumps(data), channel='rockola')
-
-    return redirect(url_for('home'))
+    send_event("latest", json.dumps(data), channel='rockola')
+    return ""
 
 
 @app.route('/songs/add')
@@ -64,13 +58,12 @@ def list_latest_songs():
 def update_list():
     lists = json.loads(request.args['data'])
     print lists
-    return "ok" 
+    return "ok"
 
 @app.route('/newsong')
 def new_song():
     """push new song in the player"""
-    
+
 
 if __name__ == '__main__':
     app.run('0.0.0.0')
-

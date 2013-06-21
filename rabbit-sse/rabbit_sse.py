@@ -3,7 +3,7 @@ from sse import Sse as PySse
 from flask import json, current_app, Blueprint
 
 
-sse = Blueprint('rabbitsse', __name__)
+rabbit_sse = Blueprint('rabbitsse', __name__)
 sender = receiver = queue_manager.Queue()
 flask_queue = 'flask'  # rabbitmq queue name
 
@@ -26,7 +26,7 @@ def send_event(event_name, data):
     sender.send(flask_queue, json.dumps([event_name, data]))
 
 
-@sse.route('')
+@rabbit_sse.route('')
 def stream():
     return current_app.response_class(
         SseStream(),
