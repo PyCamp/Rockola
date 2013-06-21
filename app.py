@@ -2,15 +2,16 @@ from flask import json
 from flask import Flask, request
 from flask import render_template
 from player import ShivaClient, VLCController
-from rabbit_sse import sse
-from rabbit_sse import send_event
-
+from msgs_queue.receive_list_process import ReceiveListProcess
 app = Flask(__name__)
 app.debug = True
-app.register_blueprint(sse, url_prefix='/messages')
+#app.register_blueprint(sse, url_prefix='/messages')
 
 shiva = ShivaClient()
 vlc = VLCController()
+rl = ReceiveListProcess()
+rl.run()
+
 
 @app.route('/')
 def home():
@@ -57,10 +58,11 @@ def list_latest_songs():
 @app.route('/update_lists')
 def update_list():
     lists = json.loads(request.args['data'])
-    top, last = lists['top'], lists['lasts']
+    top, last = lists['top'], lists['last']
+
 
     ids = set([track_id for track_id, _ in top])
-    ids |= set(last)
+    ids |= set([track_id for track_id, _ in last])
 
     tracks_info = shiva.get_tracks(ids)
 

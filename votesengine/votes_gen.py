@@ -29,6 +29,6 @@ def generate_votes():
 control_name = queue_manager.get_queue_name('control')
 cmd_sender = queue_manager.Publisher(control_name)
 
-for i in range(100):
+for i in range(60):
     cmd_sender.send(generate_votes())
     sleep(1)
