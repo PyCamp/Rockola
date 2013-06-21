@@ -13,7 +13,7 @@ def rellenar(func):
         if self.votos:
             result = func(self)
         else:
-            result = [(random(1,20),0)]
+            result = [(randint(1,20),0)]
         return result
     return decorador
 
@@ -77,7 +77,7 @@ class VoteManager(object):
             pass
         return top[:5]
 
-    @rellenar
+    
     def ultimos(self):
         """ Retorna una lista de tuplas track/puntaje ordenadas según
         la primera vez que fueron votados """
@@ -103,7 +103,10 @@ class VoteManager(object):
     def new_top(self):
         """ Retorna True si se debe cambiar la canción por la cantidad
         de votos negativos, de lo contrario False"""
-        lista = self.votos[self.head]
+        try:
+            lista = self.votos[self.head]
+        except KeyError:
+            return True 
         cociente = len(lista[0]) / (len(lista[1])+1)  # negativos/positivos
         if cociente >= COCIENTE_CAMBIOTEMA:
             #self.endofsong()
