@@ -6,6 +6,7 @@ import queue_manager
 import json
 import requests
 
+from time import sleep
 URL = "http://localhost:5000/"
 
 
@@ -16,7 +17,7 @@ def play_new_song(newsong):
     ##aca va el raise status de request
     #raise NotImplementedError()
 
-
+sleep(6)
 current_votes = votos.VoteManager()
 
 #armamos las conexiones a las colas de entrada y salida

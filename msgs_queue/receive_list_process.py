@@ -2,6 +2,7 @@
 import queue_manager
 import requests
 import json
+from time import sleep
 from multiprocessing import Process
 
 
@@ -15,6 +16,7 @@ class ReceiveListProcess(object):
         self.receiver = queue_manager.Queue()
 
     def receive_loop(self):
+        sleep(5)
         while self.running:
             msg = self.receiver.receive(self.lists_name)
             data = {'data': msg}

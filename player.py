@@ -76,7 +76,9 @@ class ShivaClient(object):
                     artist_id = None
                 artist = self.artists[artist_id]
                 response[track_id] = {'title': track_title,
-                                      'artist': artist}
+                                      'artist': artist,
+                                      'path': track['files']['audio/mp3'].replace('http://127.0.0.1:8001/',
+                                                                         '/media/Rockola')}
         return response
 
     def get_artists(self):
@@ -95,7 +97,7 @@ class NextSongWatcher(object):
             remaining_time = self.vlcc.get_remaining_time()
             if remaining_time < 10:
                 data = {'timestamp': int(time.time()),
-                        'operation': 'nueva_cancion'}
+                        'operation': 'nuevacancion'}
                 self.sender.send(self.control_name, json.dumps(data))
                 time.sleep(20)
 
