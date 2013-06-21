@@ -2,8 +2,20 @@
 #-*- coding: utf-8 -*-
 
 import datetime
+from random import randint
 
 COCIENTE_CAMBIOTEMA = 0.5  # Cambia el tema si tiene 25% negativos
+
+def rellenar(func):
+    """ Se asegura de que haya al menos un resultado y que no tire
+    errores si no hay votos"""
+    def decorador(self):
+        if self.votos:
+            result = func(self)
+        else:
+            result = [(random(1,20),0)]
+        return result
+    return decorador
 
 
 class VoteManager(object):
@@ -15,6 +27,7 @@ class VoteManager(object):
         self.track_timestamp = dict()  # Timestamp con fecha en que se inserta
         self.last_head = 1
         self.head = 1  # El track_id que está primero
+
 
     def add_vote(self, voto):
         """ Regenera el diccionario con la cantidad de votos negativos y
@@ -43,6 +56,7 @@ class VoteManager(object):
             dicc[track] = len(lista[1]) - len(lista[0])  # positivos - negativos
         return dicc
 
+    @rellenar
     def top(self):
         """ Retorna una lista ordenada con tuplas que contienen el
         track_id y su puntaje """
@@ -61,8 +75,9 @@ class VoteManager(object):
             self.head = top[0][0]
         except KeyError:
             pass
-        return top
+        return top[:5]
 
+    @rellenar
     def ultimos(self):
         """ Retorna una lista de tuplas track/puntaje ordenadas según
         la primera vez que fueron votados """
@@ -89,7 +104,7 @@ class VoteManager(object):
         """ Retorna True si se debe cambiar la canción por la cantidad
         de votos negativos, de lo contrario False"""
         lista = self.votos[self.head]
-        cociente = len(lista[0]) / len(lista[1])  # negativos/positivos
+        cociente = len(lista[0]) / (len(lista[1])+1)  # negativos/positivos
         if cociente >= COCIENTE_CAMBIOTEMA:
             #self.endofsong()
             #self.head = self.votos()[0][0]
