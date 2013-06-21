@@ -18,13 +18,13 @@ app.TrackCollection = Backbone.Collection.extend({
 app.LatestView = Backbone.View.extend({
   initialize: function(options) {
     this.$el = $('#latests');
-    this.collection = options.collection
+    this.collection = options.collection;
     this.getTracks();
   },
   render: function() {
     var tpls = "";
     this.collection.each(function(model) {
-      tpls += _.template('<li><a href="docs/api/themes.html"><%= artist %> - <%= title %></a></li>', model.toJSON());
+      tpls += _.template('<li><a href="#"><%= artist %> - <%= title %></a></li>', model.toJSON());
     });
     this.$el.html(tpls).listview('refresh');
   },
@@ -40,19 +40,23 @@ app.LatestView = Backbone.View.extend({
   },
 });
 
+
 app.SearchItemView = Backbone.View.extend({
   tagName: 'li',
   initialize: function(options) {
     this.model = options.model;
   },
   onClick: function(e) {
-    alert('jaja');
+    // send add new song request
+    e.preventDefault();
   },
   render: function() {
-    this.$el.html(_.template('<a href="docs/api/themes.html"><%= artist %> - <%= title %></a>', this.model.toJSON()));
+    this.$el.html(_.template('<a href="#"><%= artist %> - <%= title %></a>', this.model.toJSON()));
+    this.$el.click(this.onClick);
     return this;
-  }  
+  }
 });
+
 
 app.SearchTracksView = Backbone.View.extend({
   initialize: function(options) {
@@ -63,17 +67,21 @@ app.SearchTracksView = Backbone.View.extend({
     this.getTracks();
   },
   render: function() {
-    var $tpls = $(document.createDocumentFragment()); 
+    this.$el.empty();
+    var self = this;
     this.collection.each(function(song) {
       var searchItemView = new app.SearchItemView({model: song});
-      console.log(searchItemView.render().el)
-      $tpls.appendHtml(searchItemView.render().el);
+      self.$el.append(searchItemView.render().el);
     });
-    this.$el.html(tpls).listview('refresh');
+    this.$el.listview('refresh');
+  },
+  getTracks: function() {
+    // ajax call to retrive all songs.
   }
 });
 
 app.NowPlayingView = Backbone.View.extend({ });
+
 
 app.init = function() {
   var songsCollection = new app.TrackCollection();
@@ -99,6 +107,7 @@ app.init = function() {
       },
   ]);
 }
+
 
 $(document).ready(function() {
   app.init();
