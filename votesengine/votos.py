@@ -7,6 +7,8 @@ class VoteManager(object):
 	def __init__(self):
 		self.votos = dict()
 		self.tracks = list() # Lista de IDs de track, en orden según aparición
+        self.last_head = 0
+        self.head = 0
 
 	def add_vote(self, voto):
 		""" Regenera el diccionario con la cantidad de votos negativos y
@@ -18,6 +20,7 @@ class VoteManager(object):
 		if not self.votos.has_key(track_id):
 			self.votos[track_id] = [set([]), set([])]
 			self.tracks.append(track_id)
+			self.tracks = self.tracks[-10:] # Conservo los últimos elementos
 		lista = self.votos[track_id]
 		if sessid in lista[not calificacion]:
 			# Si votó por lo contrario, borramos el voto anterior
@@ -35,10 +38,29 @@ class VoteManager(object):
 	def top(self):
 		""" Retorna una lista ordenada con tuplas que contienen el
 		track_id y su cantidad de votos """
-		return sorted(self.votes().items(), key=lambda v: v[1], reverse=True)
+        top = sorted(self.votes().items(), key=lambda v: v[1], reverse=True)[:5]
+        try:
+            self.head = top[0][0]
+        except KeyError:
+            pass
+		return top
 
 	def ultimos(self):
 		""" Retorna una lista de tracks ordenadas según la primera vez
 		que fueron votados """
 		return list(reversed(self.tracks))
 	
+	def endofsong(self, track_id = None):
+		""" Elimina la canción más votada de la lista, o la canción
+		correspondiente al track_id si es especificado"""
+		if track_id is None:
+			track_id = self.top()[0][0]
+		try:
+			del(self.votos[track_id])
+		except KeyError:
+			pass
+
+	def newtop(self):
+		""" Retorna una lista de tracks ordenadas según la primera vez
+		que fueron votados """
+		return self.last_head != self.head

@@ -3,8 +3,7 @@ import queue_manager
 control_name = queue_manager.get_queue_name('control')
 lists_name = queue_manager.get_queue_name('lists')
 
-cmd_sender = queue_manager.Publisher(control_name)
-lists_sender = queue_manager.Publisher(lists_name)
+sender = queue_manager.Queue()
 
-cmd_sender.send('Hola Motor de votos!!!')
-lists_sender.send('{Mana, Dream, Epica}')
+sender.send(control_name, 'Hola Motor de votos!!!')
+sender.send(lists_name, '{Mana, Dream, Epica}')
