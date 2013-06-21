@@ -1,2 +1,2 @@
 #!/bin/bash
-gunicorn -k gevent -b 0.0.0.0:5000 --debug app:app
+twistd -n cyclone-sse --amqp-host=192.168.10.58 -l 0
