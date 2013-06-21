@@ -13,14 +13,16 @@ def get_queue_name(queue):
     :param queue: one of 'lists', 'control'
     :returns: the name of the desired queue.
     """
-    names = {'lists': 'lists_queue', 'control': 'control_queue'}
+    names = {'flask':'flask_queue',
+             'lists': 'lists_queue',
+             'control': 'control_queue'}
     return names[queue]
 
 
 class Queue(object):
 
     def __init__(self, queues=['lists_queue', 'control_queue'],
-                 ip='192.168.10.90'):
+                 ip='192.168.10.58'):
         """
         Creates a publisher class to a message queue.
 
@@ -36,7 +38,6 @@ class Queue(object):
         for queue in queues:
             print 'delcaring: ', queue
             self._declare_queue(queue)
-
     def _declare_queue(self, name):
         """
         Creates a queue in the messaging server.
