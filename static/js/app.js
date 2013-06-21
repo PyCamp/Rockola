@@ -6,7 +6,8 @@ app.TrackModel = Backbone.Model.extend({
     'artist': '',
     'title': '',
     'duration': '',
-    'upvotes': 0
+    'upvotes': 0,
+    'downvotes': 0
   },
 });
 
@@ -15,11 +16,11 @@ app.TrackCollection = Backbone.Collection.extend({
 });
 
 
-app.LatestView = Backbone.View.extend({
+app.NowPlayingView = Backbone.View.extend({
   initialize: function(options) {
     this.$el = $('#latests');
     this.collection = options.collection;
-    this.getTracks();
+    //this.getTracks();
   },
   render: function() {
     var tpls = "";
@@ -31,7 +32,57 @@ app.LatestView = Backbone.View.extend({
   getTracks: function() {
     var self = this;
     var source = new EventSource('/messages')
-    source.addEventListener('latests', function(e) {
+    source.addEventListener('nowplaying', function(e) {
+      var response = JSON.parse(e.data);
+      _.each(response, function(model) {
+        self.collection.add(model);
+      });
+    });
+  },
+});
+
+
+app.LatestItemView = Backbone.View.extend({
+  tagName: 'li',
+  initialize: function(options) {
+    this.model = options.model;
+    //_.bindAll(this, this.render);
+    
+  },
+  addVote: function(e) {
+    // send add new song request
+    alert('Nuevo voto para ' + this.model.get('artist'));
+    e.preventDefault();
+  },
+  render: function() {
+    this.$el.html(_.template('<a href="#"><%= artist %> - <%= title %><span class="ui-li-count"><%= upvotes %></span></a> <a href="#" class="add-vote" data-icon="plus" data-theme="a">plus</a>', this.model.toJSON()));
+    this.$el.find('.add-vote').click($.proxy(this.addVote, this));
+    return this;
+  }
+});
+
+
+app.LatestView = Backbone.View.extend({
+  initialize: function(options) {
+    this.$el = $('#latestlistview');
+    this.collection = options.collection;
+    this.collection.on('add', this.render, this);
+    this.collection.on('reset', this.render, this);
+    //this.getTracks();
+  },
+  render: function() {
+    this.$el.empty();
+    var self = this;
+    this.collection.each(function(song) {
+      var latestItemView = new app.LatestItemView({model: song});
+      self.$el.append(latestItemView.render().el);
+    });
+    this.$el.listview('refresh');
+  },
+  getTracks: function() {
+    var self = this;
+    var source = new EventSource('http://192.168.10.63:8888/')
+    source.addEventListener('base', function(e) {
       var response = JSON.parse(e.data);
       _.each(response, function(model) {
         self.collection.add(model);
@@ -48,11 +99,12 @@ app.SearchItemView = Backbone.View.extend({
   },
   onClick: function(e) {
     // send add new song request
+    alert('New song request ' + this.model.get('artist'));
     e.preventDefault();
   },
   render: function() {
     this.$el.html(_.template('<a href="#"><%= artist %> - <%= title %></a>', this.model.toJSON()));
-    this.$el.click(this.onClick);
+    this.$el.click($.proxy(this.onClick, this));
     return this;
   }
 });
@@ -80,14 +132,21 @@ app.SearchTracksView = Backbone.View.extend({
   }
 });
 
-app.NowPlayingView = Backbone.View.extend({ });
-
 
 app.init = function() {
   var songsCollection = new app.TrackCollection();
   var latestCollection = new app.TrackCollection();
+  var nowPlayingCollection = new app.TrackCollection();
   new app.SearchTracksView({collection: songsCollection});
   new app.LatestView({collection: latestCollection});
+  new app.NowPlayingView({collection: nowPlayingCollection});
+  latestCollection.add([
+      {'id': 6,
+      'title': 'Smoke on the Waterrrrr',
+      'artist': 'Deep Thought',
+      'upvotes': '42'
+      },
+  ]);
   songsCollection.add([
       {'id': 1,
       'title': 'Smoke on the Water',
