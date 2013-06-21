@@ -13,7 +13,7 @@ def rellenar(func):
         if self.votos:
             result = func(self)
         else:
-            result = [(1,0)]
+            result = [(random(1,20),0)]
         return result
     return decorador
 
