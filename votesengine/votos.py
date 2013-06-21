@@ -43,10 +43,11 @@ class VoteManager(object):
 		que fueron votados """
 		return list(reversed(self.tracks))
 	
-	def endofsong(self):
-		""" Elimina la canción más votada de la lista """
-		track_id = self.top()[0][0]
-		print track_id
+	def endofsong(self, track_id = None):
+		""" Elimina la canción más votada de la lista, o la canción
+		correspondiente al track_id si es especificado"""
+		if track_id is None:
+			track_id = self.top()[0][0]
 		try:
 			del(self.votos[track_id])
 		except KeyError:
