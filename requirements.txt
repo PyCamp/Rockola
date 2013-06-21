@@ -6,3 +6,4 @@ argparse==1.2.1
 itsdangerous==0.21
 wsgiref==0.1.2
 pika==0.9.8
+git+git://github.com/DazWorrall/flask-sse#egg=flask-sse

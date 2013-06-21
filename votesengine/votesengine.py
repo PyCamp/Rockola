@@ -2,7 +2,7 @@
 #-*- coding: utf-8 -*-
 
 import votos
-import control_queue
+import queue_manager
 import json
 
 
@@ -10,8 +10,16 @@ def play_new_song(songid):
     """se usa para avisarle a shiva que reproduzca una nueva cancion"""
     raise NotImplementedError()
 
-reciever = control_queue.Reciever()
+
 current_votes = votos.VoteManager()
+
+control_name = queue_manager.get_queue_name('control')
+lists_name = queue_manager.get_queue_name('lists')
+
+cmd_receiver = queue_manager.Receiver(control_name)
+lists_receiver = queue_manager.Receiver(lists_name)
+
+lists_sender = queue_manager.Publisher(lists_name)
 
 
 # read data from rabbitMQ
@@ -19,7 +27,7 @@ current_votes = votos.VoteManager()
 # parse json
 
 while True:
-    new_vote = reciever.recieve()
+    new_vote = cmd_receiver.receive()
     print new_vote
     new_vote =  json.loads(new_vote)
     if "votar" in new_vote["operation"]:
@@ -28,6 +36,7 @@ while True:
         ultimos = current_votes.ultimos()
         updatedata = {"top": top, "last": ultimos}
         print updatedata
+        lists_sender.send(json.dumps(updatedata))
         # Genera las dos listas Top y last
     elif "necesitolista" in new_vote["operation"]:
         pass
