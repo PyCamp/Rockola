@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 #-*- coding: utf-8 -*-
 
-import time, datetime
+import datetime
 
 COCIENTE_CAMBIOTEMA = 0.5  # Cambia el tema si tiene 25% negativos
+
 
 class VoteManager(object):
     """ Clase que se encarga de generar las listas de reproducción en
@@ -11,14 +12,9 @@ class VoteManager(object):
     def __init__(self):
         self.votos = dict()
         self.tracks = list()  # Lista de IDs de track, en orden según aparición
-<<<<<<< HEAD
-        self.track_timestamp = dict() # Timestamp con fecha en que se inserta
-        self.last_head = 0
-        self.head = 0  # El track_id que está primero
-=======
+        self.track_timestamp = dict()  # Timestamp con fecha en que se inserta
         self.last_head = 1
         self.head = 1  # El track_id que está primero
->>>>>>> 8d350817563e6e9ee8681cb05f4889ca04e24448
 
     def add_vote(self, voto):
         """ Regenera el diccionario con la cantidad de votos negativos y
@@ -56,10 +52,10 @@ class VoteManager(object):
             created = datetime.datetime.fromtimestamp(
                     self.track_timestamp[track_id])
             delta = datetime.datetime.now() - created
-            delta = delta.days*24*3600.0 + delta.seconds # Segundos totales
-            puntaje = votos / delta if delta else 0 # Evito ZeroDivisionError
+            delta = delta.days * 24 * 3600.0 + delta.seconds  # Segundos totales
+            puntaje = votos / delta if delta else 0  # Evito ZeroDivisionError
             puntajes[track_id] = puntaje
-        top = sorted(self.votes().items(), key=lambda v: puntajes[v[0]], 
+        top = sorted(self.votes().items(), key=lambda v: puntajes[v[0]],
                 reverse=True)
         try:
             self.head = top[0][0]
@@ -87,8 +83,8 @@ class VoteManager(object):
             try:
                 self.head = self.top()[0][0]
             except IndexError:
-                self.head = 1                
-    
+                self.head = 1
+
     def new_top(self):
         """ Retorna True si se debe cambiar la canción por la cantidad
         de votos negativos, de lo contrario False"""
