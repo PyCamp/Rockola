@@ -1,6 +1,7 @@
 
 import queue_manager
-import urllib
+import requests
+import json
 from multiprocessing import Process
 
 
@@ -16,8 +17,9 @@ class ReceiveListProcess(object):
     def receive_loop(self):
         while self.running:
             msg = self.receiver.receive(self.lists_name)
-            data = urllib.urlencode({'data': msg})
-            urllib.urlopen(self.URL, data)
+            data = {'data': msg}
+            r = requests.get(self.URL, params=data)
+            print r.text
 
     def run(self):
         p = Process(target=self.receive_loop)
@@ -26,3 +28,6 @@ class ReceiveListProcess(object):
 
     def stop(self):
         self.stopping = False
+
+rl = ReceiveListProcess()
+rl.run()
