@@ -5,8 +5,5 @@ lists_name = queue_manager.get_queue_name('lists')
 
 sender = queue_manager.Queue()
 
-sender.declare_queue('hola')
-sender.declare_queue('chau')
-
-sender.send('hola', 'Hola Motor de votos!!!')
-sender.send('chau', '{Mana, Dream, Epica}')
+sender.send(control_name, 'Hola Motor de votos!!!')
+sender.send(lists_name, '{Mana, Dream, Epica}')

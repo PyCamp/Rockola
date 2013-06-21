@@ -8,18 +8,15 @@ lists_name = queue_manager.get_queue_name('lists')
 
 receiver = queue_manager.Queue()
 
-receiver.declare_queue('hola')
-receiver.declare_queue('chau')
-
 
 def rec_commands():
     while True:
-        print receiver.receive('hola')
+        print receiver.receive(control_name)
 
 
 def rec_lists():
     while True:
-        print receiver.receive('chau')
+        print receiver.receive(lists_name)
 
 
 r1 = Process(target=rec_commands)
