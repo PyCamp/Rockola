@@ -77,7 +77,6 @@ class VoteManager(object):
             pass
         return top[:5]
 
-    @rellenar
     def ultimos(self):
         """ Retorna una lista de tuplas track/puntaje ordenadas según
         la primera vez que fueron votados """
