@@ -72,7 +72,6 @@ class VoteManager(object):
         de votos negativos, de lo contrario False"""
         lista = self.votos[self.head]
         cociente = len(lista[0]) / len(lista[1])  # negativos/positivos
-        print cociente
         if cociente >= COCIENTE_CAMBIOTEMA:
             #self.endofsong()
             #self.head = self.votos()[0][0]
