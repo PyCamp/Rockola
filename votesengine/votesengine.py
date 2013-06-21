@@ -29,13 +29,10 @@ receiver = queue_manager.Queue()
 while True:
     #Busca un nuevo voto y lo transforma
     new_vote = receiver.receive(control_name)
-<<<<<<< HEAD
+
     new_vote =  json.loads(new_vote)
     print new_vote
-=======
-    new_vote = json.loads(new_vote)
 
->>>>>>> 452f7a9bb20fc085dbadfc6ab0af6a335a24e765
     if "votar" in new_vote["operation"]:
         #si la operacion es un voto lo agrega
         current_votes.add_vote(new_vote)
