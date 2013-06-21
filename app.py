@@ -18,6 +18,7 @@ rl.run()
 
 qm = queue_manager.Queue()
 cmdq = queue_manager.get_queue_name('control')
+flaskq = queue_manager.get_queue_name('flask')
 
 @app.route('/')
 def home():
@@ -85,8 +86,7 @@ def update_list():
                      'artist': info['artist']}
 
     msg_to_ui = {'top': top, 'last': last}
-    print msg_to_ui
-    #FIXME: Pushear esta info a la UI
+    qm.send(flaskq, msg_to_ui)
 
     return "ok"
 
