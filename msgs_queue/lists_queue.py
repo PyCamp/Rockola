@@ -4,12 +4,13 @@ different processes using RabbitMQ as back end.
 """
 import pika
 
-NAME = 'control_queue'
+NAME = 'lists_queue'
 SERVER_IP = '192.168.10.58'
 
 CONN_PARAM = pika.ConnectionParameters(host=SERVER_IP)
 
 
+# TODO: Avoid code duplication!!!!
 class Publisher(object):
     def __init__(self):
         # We connect to the server in a blocking way.
@@ -30,9 +31,11 @@ class Receiver(object):
         connection = pika.BlockingConnection(CONN_PARAM)
         self.channel = connection.channel()
 
-    def receive(self):
-        method_frame = None
-        while not method_frame:
-            method_frame, header_frame, body = self.channel.basic_get(NAME)
-        self.channel.basic_ack(method_frame.delivery_tag)
-        return body
+    def _callback(self, channel, method_frame, header_frame, body):
+        self.callback(body)
+        self.channel.basic_ack(delivery_tag=method_frame.delivery_tag)
+
+    def start_receiving(self, callback):
+        self.callback = callback
+        self.channel.basic_consume(self._callback, NAME)
+        self.channel.start_consuming()

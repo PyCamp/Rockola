@@ -1,5 +1,9 @@
 import control_queue
+import lists_queue
 
-sender = control_queue.Publisher()
 
-sender.send_command('Hola Motor de votos!!!')
+cmd_sender = control_queue.Publisher()
+lists_sender = lists_queue.Publisher()
+
+cmd_sender.send('Hola Motor de votos!!!')
+lists_sender.send('{Mana, Dream, Epica}')
