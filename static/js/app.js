@@ -19,6 +19,7 @@ app.LatestView = Backbone.View.extend({
   initialize: function(options) {
     this.$el = $('#latests');
     this.collection = options.collection
+    this.getTracks();
   },
   render: function() {
     var tpls = "";
@@ -26,16 +27,23 @@ app.LatestView = Backbone.View.extend({
       tpls += _.template('<li><a href="docs/api/themes.html"><%= artist %> - <%= title %></a></li>', model.toJSON());
     });
     this.$el.html(tpls).listview('refresh');
-  }
+  },
+  getTracks: function() {
+    var self = this;
+    var source = new EventSource('/messages')
+    source.addEventListener('latests', function(e) {
+      var response = JSON.parse(e.data);
+      _.each(response, function(model) {
+        self.collection.add(model);
+      });
+    });
+  },
 });
 
 app.SearchItemView = Backbone.View.extend({
-  el: 'li',
+  tagName: 'li',
   initialize: function(options) {
     this.model = options.model;
-  },
-  events: {
-    'click': this.onClick
   },
   onClick: function(e) {
     alert('jaja');
@@ -54,24 +62,14 @@ app.SearchTracksView = Backbone.View.extend({
     this.collection.on('reset', this.render, this);
     this.getTracks();
   },
-  getTracks: function() {
-    var self = this;
-    //var source = new EventSource('/songs');
-    //source.addEventListener('songslist', function(e) {
-      //var response = JSON.parse(e.data);
-      //_.each(response, function(model) {
-        //self.collection.add(model);
-      //});
-    //});
-  },
   render: function() {
-    var tpls = "";
-    this.collection.each(function(model) {
-      debugger;
-      var searchItemView = new app.SearchItemView({model: model});
-      tpls += searchItemView.render().el;
+    var $tpls = $(document.createDocumentFragment()); 
+    this.collection.each(function(song) {
+      var searchItemView = new app.SearchItemView({model: song});
+      console.log(searchItemView.render().el)
+      $tpls.appendHtml(searchItemView.render().el);
     });
-    this.$el.html(tpls).listview('refresh'); 
+    this.$el.html(tpls).listview('refresh');
   }
 });
 
