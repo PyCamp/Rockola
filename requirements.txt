@@ -4,7 +4,6 @@ MarkupSafe==0.18
 Werkzeug==0.9.1
 argparse==1.2.1
 distribute==0.6.24
-flask-sse==0.1
 gevent==0.13.8
 greenlet==0.4.1
 gunicorn==0.17.4
