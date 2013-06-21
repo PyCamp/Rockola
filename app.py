@@ -4,14 +4,13 @@ from flask import json
 from flask import Flask, request
 from flask import render_template
 from msgs_queue import queue_manager
-#from rabbit_sse import sse
-#from rabbit_sse import send_event
+from player import ShivaClient, VLCController
 
 app = Flask(__name__)
 app.debug = True
-#app.register_blueprint(sse, url_prefix='/messages')
 
-#shiva = ShivaClient()
+shiva = ShivaClient()
+vlc = VLCController()
 
 qm = queue_manager.Queue()
 cmdq = queue_manager.get_queue_name('control')
@@ -61,10 +60,32 @@ def list_latest_songs():
 @app.route('/update_lists')
 def update_list():
     lists = json.loads(request.args['data'])
-    print lists
+    top, last = lists['top'], lists['lasts']
+
+    ids = set([track_id for track_id, _ in top])
+    ids |= set(last)
+
+    tracks_info = shiva.get_tracks(ids)
+
+    for i, (track_id, votos) in enumerate(top):
+        info = tracks_info[track_id]
+        top[i][0] = {'id' : track_id,
+                     'title': info['title'],
+                     'artist': info['artist']}
+
+    for i, (track_id, votos) in enumerate(last):
+        info = tracks_info[track_id]
+        last[0] = {'id' : track_id,
+                     'title': info['title'],
+                     'artist': info['artist']}
+
+    msg_to_ui = {'top': top, 'last': last}
+    print msg_to_ui
+    #FIXME: Pushear esta info a la UI
+
     return "ok"
 
-@app.route('/control/newsong')
+@app.route('/newsong')
 def new_song():
     """push new song in the player"""
 
