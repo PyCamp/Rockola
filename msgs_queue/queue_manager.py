@@ -37,7 +37,6 @@ class Queue(object):
         self.channel = self.connection.channel()
 
         for queue in queues:
-            print 'delcaring: ', queue
             self._declare_queue(queue)
 
     def __del__(self):
