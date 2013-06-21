@@ -6,10 +6,13 @@ import queue_manager
 import json
 import requests
 
-def play_new_song(url, newsong):
+URL = "http://localhost/"
+
+def play_new_song( newsong):
     """se usa para avisarle a player que reproduzca una nueva cancion"""
-    data = json.dumps({"song_id" : newsong})    
-    requests.post(url, data = data)
+
+    data = json.dumps({"song_id" : newsong[0]})    
+    requests.post(URL + "control/newsong", data = data)
     ##aca va el raise status de request
     #raise NotImplementedError()
 
