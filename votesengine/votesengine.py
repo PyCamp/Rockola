@@ -57,7 +57,6 @@ while True:
     elif "nuevacancion" in new_vote["operation"]:
         #elimina la cancion actual de la lista de canciones
         current_votes.endofsong()
-
         #recalcula el top y devuelve la primera cancion
         newsong = current_votes.top()[0][0]
 

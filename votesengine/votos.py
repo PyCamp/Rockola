@@ -1,9 +1,22 @@
 #!/usr/bin/env python
 #-*- coding: utf-8 -*-
 
-import time, datetime
+import datetime
+from random import randint
 
 COCIENTE_CAMBIOTEMA = 0.5  # Cambia el tema si tiene 25% negativos
+
+def rellenar(func):
+    """ Se asegura de que haya al menos un resultado y que no tire
+    errores si no hay votos"""
+    def decorador(self):
+        if self.votos:
+            result = func(self)
+        else:
+            result = [(random(1,20),0)]
+        return result
+    return decorador
+
 
 class VoteManager(object):
     """ Clase que se encarga de generar las listas de reproducción en
@@ -11,7 +24,7 @@ class VoteManager(object):
     def __init__(self):
         self.votos = dict()
         self.tracks = list()  # Lista de IDs de track, en orden según aparición
-        self.track_timestamp = dict() # Timestamp con fecha en que se inserta
+        self.track_timestamp = dict()  # Timestamp con fecha en que se inserta
         self.last_head = 1
         self.head = 1  # El track_id que está primero
 
@@ -43,6 +56,7 @@ class VoteManager(object):
             dicc[track] = len(lista[1]) - len(lista[0])  # positivos - negativos
         return dicc
 
+    @rellenar
     def top(self):
         """ Retorna una lista ordenada con tuplas que contienen el
         track_id y su puntaje """
@@ -52,17 +66,18 @@ class VoteManager(object):
             created = datetime.datetime.fromtimestamp(
                     self.track_timestamp[track_id])
             delta = datetime.datetime.now() - created
-            delta = delta.days*24*3600.0 + delta.seconds # Segundos totales
-            puntaje = votos / delta if delta else 0 # Evito ZeroDivisionError
+            delta = delta.days * 24 * 3600.0 + delta.seconds  # Segundos totales
+            puntaje = votos / delta if delta else 0  # Evito ZeroDivisionError
             puntajes[track_id] = puntaje
-        top = sorted(self.votes().items(), key=lambda v: puntajes[v[0]], 
+        top = sorted(self.votes().items(), key=lambda v: puntajes[v[0]],
                 reverse=True)
         try:
             self.head = top[0][0]
         except KeyError:
             pass
-        return top
+        return top[:5]
 
+    @rellenar
     def ultimos(self):
         """ Retorna una lista de tuplas track/puntaje ordenadas según
         la primera vez que fueron votados """
@@ -83,8 +98,8 @@ class VoteManager(object):
             try:
                 self.head = self.top()[0][0]
             except IndexError:
-                self.head = 1                
-    
+                self.head = 1
+
     def new_top(self):
         """ Retorna True si se debe cambiar la canción por la cantidad
         de votos negativos, de lo contrario False"""

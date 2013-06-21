@@ -23,7 +23,7 @@ def get_queue_name(queue):
 class Queue(object):
 
     def __init__(self, queues=names.values(),
-                 ip='192.168.10.58'):
+                 ip='192.168.10.90'):
         """
         Creates a publisher class to a message queue.
 
@@ -37,7 +37,6 @@ class Queue(object):
         self.channel = self.connection.channel()
 
         for queue in queues:
-            print 'delcaring: ', queue
             self._declare_queue(queue)
 
     def __del__(self):
