@@ -1,19 +1,20 @@
-import json
+
 from time import time
-from flask import Flask, request
 from flask import json
-from flask import url_for
-from flask import redirect
+from flask import Flask, request
 from flask import render_template
-from flask.ext.sse import sse
-from flask.ext.sse import send_event
-from player import ShivaClient
+from msgs_queue import queue_manager
+#from rabbit_sse import sse
+#from rabbit_sse import send_event
 
 app = Flask(__name__)
 app.debug = True
-app.register_blueprint(sse, url_prefix='/messages')
+#app.register_blueprint(sse, url_prefix='/messages')
 
 #shiva = ShivaClient()
+
+qm = queue_manager.Queue()
+cmdq = queue_manager.get_queue_name('control')
 
 @app.route('/')
 def home():
@@ -43,7 +44,7 @@ def update_latest_songs():
     ]
 
     data = dict(message=songs)
-    send_event("latest", json.dumps(data), channel='rockola')
+    #send_event("latest", json.dumps(data), channel='rockola')
     return ""
 
 
@@ -69,14 +70,15 @@ def new_song():
 
 @app.route('/vote')
 def vote():
-    id_track = request.args['id_tack']
+    id_track = request.args['track_id']
     operation = request.args['operation']
     timestamp = int(time())
     id_session = request.remote_addr
     keys = ['id_track', 'operation', 'timestamp', 'id_session']
     values = [id_track, operation, timestamp, id_session]
-    data = dict(keys, values)
-    print json.dump(data)
+    data = dict(zip(keys, values))
+    msg = json.dumps(data)
+    qm.send(cmdq, msg)
     return "ok"
 
 if __name__ == '__main__':
