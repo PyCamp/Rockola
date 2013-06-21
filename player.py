@@ -5,6 +5,7 @@ from urllib import urlencode
 from urllib2 import urlopen
 
 
+
 class VLCController(object):
 
     PORT = '10333'
@@ -34,10 +35,10 @@ class VLCController(object):
 
 class ShivaClient(object):
 
-    PORT = 9002
-
+    PORT = '9002'
+    URL = 'localhost'
     def __init__(self):
-        self.base_url = 'http://localhost:%s/' % self.PORT
+        self.base_url =  'http://%s:%s/' %(self.URL,self.PORT)
         self.artists = {}
         for artist in self.get_artists():
             artist_id, name = artist['id'], artist['name']
@@ -48,18 +49,17 @@ class ShivaClient(object):
         data = r.read()
         return json.loads(data)
 
-    def get_tracks(self):
+    def get_tracks(self, ids):
         tracks = self._request('tracks')
-        response = []
+        response = {}
         for track in tracks:
             track_id = track['id']
-            track_title = track['name']
-            artist_id = track['artist']['id']
-            artist = self.artist_id[artist_id]
-            response.append({'id': track_id,
-                             'title': track_title,
-                             'artist': artist})
-        return json.dumps(response)
+            if track_id in ids:
+                track_title, artist_id = track['name'], track['artist']['id']
+                artist = self.artist_id[artist_id]
+                response[track_id] = {'title': track_title,
+                                      'artist': artist}
+        return response
 
     def get_artists(self):
         return self._request('artists')

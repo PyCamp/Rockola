@@ -12,7 +12,7 @@ def play_new_song( newsong):
     """se usa para avisarle a player que reproduzca una nueva cancion"""
 
     data = json.dumps({"song_id" : newsong[0]})    
-    requests.post(URL + "control/newsong", data = data)
+    requests.post(URL + "newsong", data = data)
     ##aca va el raise status de request
     #raise NotImplementedError()
 
