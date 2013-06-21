@@ -22,7 +22,7 @@ class VLCController(object):
                         '--http-host', '0.0.0.0',
                         '--http-port', self.PORT])
         self.base_url = 'http://localhost:%s/requests/status.json' % self.PORT
-        self.wd = NextSongWatcher()
+        self.wd = NextSongWatcher(self)
         self.wd.run()
 
     def add_song(self, path, play_it_now=False):
@@ -34,7 +34,7 @@ class VLCController(object):
         s = '%s?%s' % (self.base_url, urlencode(data))
         urlopen(s)
 
-    def get_reamining_time(self):
+    def get_remaining_time(self):
         status_raw = urlopen(self.base_url).read()
         status = json.loads(status_raw)
         if 'time' in status:
@@ -92,8 +92,7 @@ class NextSongWatcher(object):
 
     def receive_loop(self):
         while self.running:
-            remaining_time = self.vlcc.remaining_time()
-            print remaining_time
+            remaining_time = self.vlcc.get_remaining_time()
             if remaining_time < 10:
                 data = {'timestamp': int(time.time()),
                         'operation': 'nueva_cancion'}
