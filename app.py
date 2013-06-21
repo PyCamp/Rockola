@@ -1,4 +1,5 @@
 import json
+from time import time
 from flask import Flask, request
 from flask import json
 from flask import url_for
@@ -66,6 +67,17 @@ def update_list():
 def new_song():
     """push new song in the player"""
 
+@app.route('/vote')
+def vote():
+    id_track = request.args['id_tack']
+    operation = request.args['operation']
+    timestamp = int(time())
+    id_session = request.remote_addr
+    keys = ['id_track', 'operation', 'timestamp', 'id_session']
+    values = [id_track, operation, timestamp, id_session]
+    data = dict(keys, values)
+    print json.dump(data)
+    return "ok"
 
 if __name__ == '__main__':
     app.run('0.0.0.0')
