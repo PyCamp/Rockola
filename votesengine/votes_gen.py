@@ -20,15 +20,14 @@ def generate_votes():
     vote_dict = {
         'id_sesion': random.choice(sessions),
         'timestamp': time.time(),
-        'id_track': random.randrange(10),
+        'id_track': int(random.gauss(4, 1))+1,
         'operation': random.choice(operations)}
     return json.dumps(vote_dict)
 
 
-
 control_name = queue_manager.get_queue_name('control')
-cmd_sender = queue_manager.Publisher(control_name)
+cmd_sender = queue_manager.Queue()
 
-for i in range(100):
-    cmd_sender.send(generate_votes())
+for i in range(60):
+    cmd_sender.send(control_name ,generate_votes())
     sleep(1)
