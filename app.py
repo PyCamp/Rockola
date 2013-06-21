@@ -99,8 +99,13 @@ def update_list():
 @app.route('/newsong')
 def new_song():
     """push new song in the player"""
-    return request.args['song_id']
-    
+    song_id = request.args['song_id']
+
+    track_info = shiva.get_tracks([song_id])[song_id]
+    path = track_info['audio/mp3'].replace('http://127.0.0.1:8001/',
+            '/media/Rockola')
+    vlc.add_song(path)
+    return 'ok'
 
 
 @app.route('/vote')
