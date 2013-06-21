@@ -4,22 +4,25 @@ Messaging Queue abstraction layer. It uses a RabbitMQ sever.
 
 import pika
 
+names = {'flask': 'flask_queue',
+         'lists': 'lists_queue',
+         'control': 'control_queue'}
+
 
 def get_queue_name(queue):
     """
     Gets the name of the desired queue. This method enforces that all the
     publishers and subscribers uses the same queue name.
 
-    :param queue: one of 'lists', 'control'
+    :param queue: one of 'lists', 'control', 'flask'
     :returns: the name of the desired queue.
     """
-    names = {'lists': 'lists_queue', 'control': 'control_queue'}
     return names[queue]
 
 
 class Queue(object):
 
-    def __init__(self, queues=['lists_queue', 'control_queue'],
+    def __init__(self, queues=names.values(),
                  ip='192.168.10.58'):
         """
         Creates a publisher class to a message queue.
