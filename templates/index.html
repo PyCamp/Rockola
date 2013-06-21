@@ -19,19 +19,41 @@
         </div>
         <div data-role="content">
             <ol data-role="listview">
-                <li><a href="#">Música 1 <span class="ui-li-count">12</span></a></li>
-                <li><a href="#">Música 2 <span class="ui-li-count">5</span></a></li>
-                <li><a href="#">Música 3 <span class="ui-li-count">1</span></a></li>
-                <li><a href="#">Música 4 <span class="ui-li-count">5</span></a></li>
-                <li><a href="#">Arjona 5 <span class="ui-li-count">6</span></a></li>
+                <li>
+                    <a href="#">
+                        <ol>
+                            <h3>Música 1 <span class="ui-li-count">12</span></h3>
+                            <p><strong>Artista, Album</strong></p>
+                            <p>00:15 - 4:35</p>
+                        </ol>
+                    </a>
+                    <a href="#" data-icon="minus">minus</a>
+                </li>
+
+                <li>
+                    <a href="#">Música 2 <span class="ui-li-count">5</span></a>
+                    <a href="#" data-icon="plus">plus</a>
+                </li>
+                <li>
+                    <a href="#">Música 3 <span class="ui-li-count">1</span></a>
+                    <a href="#" data-icon="plus">plus</a>
+                </li>
+                <li>
+                    <a href="#">Música 4 <span class="ui-li-count">5</span></a>
+                    <a href="#" data-icon="plus">plus</a>
+                </li>
+                <li>
+                    <a href="#">Arjona 5 <span class="ui-li-count">6</span></a>
+                    <a href="#" data-icon="plus">plus</a>
+                </li>
             </ol>
         </div>
         <div data-id="footer" data-position="fixed" data-role="footer">
             <div data-role="navbar">
                 <ul>
                     <li><a data-icon="star" class="ui-btn-active" href="#nowplaying">Now playing</a></li>
-                    <li><a data-icon="plus" href="#latests">latests</a></li>
-                    <li><a data-icon="search" href="#search">search</a></li>
+                    <li><a data-icon="plus" href="#latests">Latests</a></li>
+                    <li><a data-icon="search" href="#search">Search</a></li>
                 </ul>
             </div>
         </div>
@@ -43,43 +65,58 @@
             <h1 data-role="title">Latests</h1>
         </div>
         <div data-role="content">
-            
+            <ol data-role="listview">
+                <li>
+                    <a href="#">Música 1</a> <span class="ui-li-count">5</span>
+                    <a href="#" data-icon="plus">plus</a>
+                </li>
+                <li>
+                    <a href="#">Música 2 <span class="ui-li-count">5</span></a>
+                    <a href="#" data-icon="plus">plus</a>
+                </li>
+                <li>
+                    <a href="#">Música 3 <span class="ui-li-count">1</span></a>
+                    <a href="#" data-icon="plus">plus</a>
+                </li>
+                <li>
+                    <a href="#">Música 4 <span class="ui-li-count">5</span></a>
+                    <a href="#" data-icon="plus">plus</a>
+                </li>
+                <li>
+                    <a href="#">Arjona 5 <span class="ui-li-count">6</span></a>
+                    <a href="#" data-icon="plus">plus</a>
+                </li>
+            </ol>
         </div>
         <div data-id="footer" data-position="fixed" data-role="footer">
             <div data-role="navbar">
                 <ul>
                     <li><a data-icon="star" href="#nowplaying">Now playing</a></li>
-                    <li><a data-icon="plus" class="ui-btn-active" href="#latests">latests</a></li>
-                    <li><a data-icon="search" href="#search">search</a></li>
+                    <li><a data-icon="plus" class="ui-btn-active" href="#latests">Latests</a></li>
+                    <li><a data-icon="search" href="#search">Search</a></li>
                 </ul>
             </div>
         </div>
     </div>
-  </div>
-</div>
-<!-- /PAGE Latests -->
-<!-- PAGE Search -->
-<div data-role="page" id="search">
-  <div data-role="header">
+    <!-- /PAGE Latests -->
+    <!-- PAGE Search -->
+    <div data-role="page" id="search">
+    <div data-role="header">
     <h1 data-role="title">Search</h1>
-  </div>
-	<div data-role="content">
-		<div class="content-primary">
-			<nav>
-				<ul id="searchlist" data-role="listview" data-inset="true" data-filter="true" data-placeholder="Filter track" data-dividertheme="b">
-					<li><a href="docs/pages/index.html">Arjona 1</a></li>
-					<li><a href="docs/api/themes.html">Arjona 2</a></li>
-				</ul>
-			</nav>
-		</div>
-	</div>
-  <div data-id="footer" data-position="fixed" data-role="footer">
+    </div>
+    <div data-role="content">
+    <ul id="searchlist" data-role="listview" data-filter="true" data-placeholder="Filter track">
+        <li><a href="docs/pages/index.html">Arjona 1</a></li>
+        <li><a href="docs/api/themes.html">Arjona 2</a></li>
+    </ul>
+    </div>
+    <div data-id="footer" data-position="fixed" data-role="footer">
     <div data-role="navbar">
-      <ul>
-        <li><a data-icon="grid" href="#nowplaying">Now playing</a></li>
-        <li><a data-icon="grid" href="#latests">latests</a></li>
-        <li><a data-icon="search" href="#search" class="ui-btn-active">search</a></li>
-      </ul>
+        <ul>
+            <li><a data-icon="star" href="#nowplaying">Now playing</a></li>
+            <li><a data-icon="plus" href="#latests">Latests</a></li>
+            <li><a data-icon="search" href="#search" class="ui-btn-active">Search</a></li>
+        </ul>
     </div>
     <!-- /PAGE Search -->
 </body>
