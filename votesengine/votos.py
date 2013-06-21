@@ -2,8 +2,20 @@
 #-*- coding: utf-8 -*-
 
 import datetime
+from random import randint
 
 COCIENTE_CAMBIOTEMA = 0.5  # Cambia el tema si tiene 25% negativos
+
+def rellenar(func):
+    """ Se asegura de que haya al menos un resultado y que no tire
+    errores si no hay votos"""
+    def decorador(self):
+        if self.votos:
+            result = func(self)
+        else:
+            result = [(1,0)]
+        return result
+    return decorador
 
 
 class VoteManager(object):
@@ -43,6 +55,7 @@ class VoteManager(object):
             dicc[track] = len(lista[1]) - len(lista[0])  # positivos - negativos
         return dicc
 
+    @rellenar
     def top(self):
         """ Retorna una lista ordenada con tuplas que contienen el
         track_id y su puntaje """
@@ -61,8 +74,9 @@ class VoteManager(object):
             self.head = top[0][0]
         except KeyError:
             pass
-        return top
+        return top[:5]
 
+    @rellenar
     def ultimos(self):
         """ Retorna una lista de tuplas track/puntaje ordenadas según
         la primera vez que fueron votados """
