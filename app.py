@@ -6,10 +6,13 @@ from flask import render_template
 from flask.ext.sse import sse
 from flask.ext.sse import send_event
 
+from player import ShivaClient
+
 app = Flask(__name__)
 app.debug = True
 app.register_blueprint(sse, url_prefix='/messages')
 
+shiva = ShivaClient()
 
 @app.route('/')
 def home():
@@ -55,6 +58,10 @@ def add_song():
 @app.route('/songs/latest')
 def list_latest_songs():
     """List latest added songs."""
+
+@app.route('/update_list', methods=['POST'])
+def update_list(self, lists):
+    import ipdb; ipdb.set_trace()
 
 
 if __name__ == '__main__':
