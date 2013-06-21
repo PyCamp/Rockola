@@ -1,4 +1,4 @@
 {"id_sesion": "abcdfg", "timestamp": 1389289869, "id_track": 1827, "operation": "votarpositivo"}
 {"id_sesion": "abcdfg", "timestamp": 1389289889, "id_track": 1827, "operation": "votarnegativo"}
-{"timestamp": 1389289889, "operation": "nuevacancion", "current" : 5}
+{"timestamp": 1389289889, "operation": "nuevacancion", "current" : 5, "url": "http://localhost/newsong"}
 {"id_sesion": "abcdfg","timestamp": 1389289889, "operation": "necesitolista"}
