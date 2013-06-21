@@ -51,7 +51,7 @@ class VoteManager(object):
     def ultimos(self):
     	""" Retorna una lista de tracks ordenadas según la primera vez
     	que fueron votados """
-    	return list(reversed(self.tracks))
+		return list(reversed(self.tracks))[:10]
     
     def endofsong(self, track_id = None):
     	""" Elimina la canción más votada de la lista, o la canción
@@ -69,7 +69,7 @@ class VoteManager(object):
     	""" Retorna True si se debe cambiar la canción por la cantidad
     	de votos negativos, de lo contrario False"""
     	lista = self.votos[self.head]
-    	cociente = float(len(lista[0])) / len(lista[1]) #negativos/positivos
+    	cociente = len(lista[0])) / len(lista[1]) #negativos/positivos
         print cociente
     	if cociente >= COCIENTE_CAMBIOTEMA:
     		#self.endofsong()

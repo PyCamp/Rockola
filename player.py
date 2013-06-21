@@ -5,7 +5,7 @@ from urllib import urlencode
 from urllib2 import urlopen
 
 
-class VLCCntroller(object):
+class VLCController(object):
 
     PORT = '10333'
 
@@ -19,7 +19,7 @@ class VLCCntroller(object):
                         '--http-port', self.PORT])
         self.base_url = 'http://localhost:%s/requests/status.xml' % self.PORT
 
-    def add_song(self, path, play_it_now = False):
+    def add_song(self, path, play_it_now=False):
         '''
             Add a new song to the playlist and play it
         '''
@@ -31,9 +31,11 @@ class VLCCntroller(object):
     def get_player_status(self):
         pass
 
+
 class ShivaClient(object):
 
     PORT = 9002
+
     def __init__(self):
         self.base_url = 'http://localhost:%s/' % self.PORT
         self.artists = {}
@@ -50,7 +52,9 @@ class ShivaClient(object):
         tracks = self._request('tracks')
         response = []
         for track in tracks:
-            track_id, track_title, artist_id = track['id'], track['name'], track['artist']['id']
+            track_id = track['id']
+            track_title = track['name']
+            artist_id = track['artist']['id']
             artist = self.artist_id[artist_id]
             response.append({'id': track_id,
                              'title': track_title,
