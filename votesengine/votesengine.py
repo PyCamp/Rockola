@@ -6,13 +6,13 @@ import queue_manager
 import json
 import requests
 
-URL = "http://localhost/"
+URL = "http://localhost:5000/"
 
 
 def play_new_song(newsong):
     """se usa para avisarle a player que reproduzca una nueva cancion"""
     #data = json.dumps({"song_id" : newsong[0]})    
-    requests.get(URL + "newsong", data = {"song_id" : newsong[0]})
+    requests.get(URL + "newsong", data = {"song_id" : newsong})
     ##aca va el raise status de request
     #raise NotImplementedError()
 
@@ -55,23 +55,18 @@ while True:
 
     elif "nuevacancion" in new_vote["operation"]:
         #elimina la cancion actual de la lista de canciones
-<<<<<<< HEAD
         current_votes.endofsong()
-        
-=======
-        current_votes.endofsong(new_vote["current"])
 
->>>>>>> 452f7a9bb20fc085dbadfc6ab0af6a335a24e765
         #recalcula el top y devuelve la primera cancion
         newsong = current_votes.top()[0][0]
 
         #llama a la api de player y le pide una nueva cancion
-        play_new_song(new_vote["url"], newsong)
+        play_new_song( newsong)
 
     if current_votes.new_top():
         current_votes.endofsong(current_votes.last_head)
         newsong = current_votes.top()[0][0]
-        play_new_song(new_vote["url"], newsong)
+        play_new_song(newsong)
 
 
 
