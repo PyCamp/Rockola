@@ -49,9 +49,11 @@ class VoteManager(object):
         return top
 
     def ultimos(self):
-        """ Retorna una lista de tracks ordenadas según la primera vez
-        que fueron votados """
-        return list(reversed(self.tracks))[:10]
+        """ Retorna una lista de tuplas track/puntaje ordenadas según
+        la primera vez que fueron votados """
+        votos = self.votes()
+        tracks = [(track, votos[track]) for track in self.tracks]
+        return list(reversed(tracks))[:10]
 
     def endofsong(self, track_id=None):
         """ Elimina la canción más votada de la lista, o la canción
