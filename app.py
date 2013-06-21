@@ -99,7 +99,7 @@ def update_list():
 @app.route('/newsong')
 def new_song():
     """push new song in the player"""
-    return request.args['data']
+    return request.args['song_id']
     
 
 

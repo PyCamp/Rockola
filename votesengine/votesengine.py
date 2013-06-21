@@ -11,8 +11,8 @@ URL = "http://localhost:5000/"
 
 def play_new_song(newsong):
     """se usa para avisarle a player que reproduzca una nueva cancion"""
-    print {"song_id" : newsong[0]}
-    requests.get(URL + "newsong", data = {"song_id" : newsong})
+    print {"song_id" : newsong}
+    requests.get(URL + "newsong", params = {"song_id" : newsong})
     ##aca va el raise status de request
     #raise NotImplementedError()
 
