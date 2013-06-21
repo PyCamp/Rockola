@@ -10,8 +10,8 @@ class VoteManager(object):
     def __init__(self):
         self.votos = dict()
         self.tracks = list()  # Lista de IDs de track, en orden según aparición
-        self.last_head = 0
-        self.head = 0  # El track_id que está primero
+        self.last_head = 1
+        self.head = 1  # El track_id que está primero
 
     def add_vote(self, voto):
         """ Regenera el diccionario con la cantidad de votos negativos y
@@ -65,8 +65,11 @@ class VoteManager(object):
         except KeyError:
             pass
         else:
-            self.head = self.top()[0][0]
-
+            try:
+                self.head = self.top()[0][0]
+            except IndexError:
+                self.head = 1                
+    
     def new_top(self):
         """ Retorna True si se debe cambiar la canción por la cantidad
         de votos negativos, de lo contrario False"""

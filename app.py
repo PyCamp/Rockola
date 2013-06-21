@@ -93,6 +93,8 @@ def update_list():
 @app.route('/newsong')
 def new_song():
     """push new song in the player"""
+    request.args['data']
+
 
 @app.route('/vote')
 def vote():
