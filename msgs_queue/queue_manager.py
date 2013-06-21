@@ -20,7 +20,7 @@ def get_queue_name(queue):
 class Queue(object):
 
     def __init__(self, queues=['lists_queue', 'control_queue'],
-                 ip='192.168.10.90'):
+                 ip='192.168.10.58'):
         """
         Creates a publisher class to a message queue.
 
@@ -30,12 +30,18 @@ class Queue(object):
         params = pika.ConnectionParameters(host=ip, channel_max=20,
                                            connection_attempts=10,
                                            retry_delay=0.5)
-        connection = pika.BlockingConnection(params)
-        self.channel = connection.channel()
+        self.connection = pika.BlockingConnection(params)
+        self.channel = self.connection.channel()
 
         for queue in queues:
             print 'delcaring: ', queue
             self._declare_queue(queue)
+
+    def __del__(self):
+        """
+        Closes the connection to the rabbitmq server.
+        """
+        self.connection.close()
 
     def _declare_queue(self, name):
         """
