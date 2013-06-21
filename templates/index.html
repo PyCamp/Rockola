@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Rockola</title>
-    <link rel="stylesheet"  href="/static/jquerymobile/jquery.mobile-1.0.1.min.css" />
-    <script src="/static/jquerymobile/jquery.js"></script>
-    <script src="/static/jquerymobile/jquery.mobile-1.0.1.min.js"></script>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Rockola</title>
+	<link rel="stylesheet"  href="/static/jquerymobile/jquery.mobile-1.0.1.min.css" />
+	<script src="/static/jquerymobile/jquery.js"></script>
+	<script src="/static/jquerymobile/jquery.mobile-1.0.1.min.js"></script>
+	<script src="/static/js/underscore.js"></script>
+	<script src="/static/js/backbone.js"></script>
+	<script src="/static/js/app.js"></script>
 </head> 
 <body> 
     <!-- PAGE Now playing -->
@@ -52,31 +55,31 @@
             </div>
         </div>
     </div>
-    <!-- /PAGE Latests -->
-    <!-- PAGE Search -->
-    <div data-role="page" id="search">
-        <div data-role="header">
-            <h1 data-role="title">Search</h1>
-        </div>
-        <div data-role="content">
-            <ul data-role="listview" data-filter="true">
-                <li data-role="list-divider">A</li>
-                <li><a href="#">Arjona 1</a></li>
-                <li><a href="#">Arjona 2</a></li>
-                <li data-role="list-divider">B</li>
-                <li><a href="#">Beatriz</a></li>
-                <li><a href="#">Bobo</a></li>
-            </ul>
-        </div>
-        <div data-id="footer" data-position="fixed" data-role="footer">
-            <div data-role="navbar">
-                <ul>
-                    <li><a data-icon="star" href="#nowplaying">Now playing</a></li>
-                    <li><a data-icon="plus" href="#latests">latests</a></li>
-                    <li><a data-icon="search" class="ui-btn-active" href="#search">search</a></li>
-                </ul>
-            </div>
-        </div>
+  </div>
+</div>
+<!-- /PAGE Latests -->
+<!-- PAGE Search -->
+<div data-role="page" id="search">
+  <div data-role="header">
+    <h1 data-role="title">Search</h1>
+  </div>
+	<div data-role="content">
+		<div class="content-primary">
+			<nav>
+				<ul id="searchlist" data-role="listview" data-inset="true" data-filter="true" data-placeholder="Filter track" data-dividertheme="b">
+					<li><a href="docs/pages/index.html">Arjona 1</a></li>
+					<li><a href="docs/api/themes.html">Arjona 2</a></li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+  <div data-id="footer" data-position="fixed" data-role="footer">
+    <div data-role="navbar">
+      <ul>
+        <li><a data-icon="grid" href="#nowplaying">Now playing</a></li>
+        <li><a data-icon="grid" href="#latests">latests</a></li>
+        <li><a data-icon="search" href="#search" class="ui-btn-active">search</a></li>
+      </ul>
     </div>
     <!-- /PAGE Search -->
 </body>
