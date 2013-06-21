@@ -19,18 +19,25 @@ def get_queue_name(queue):
 
 class Queue(object):
 
-    def __init__(self, ip='192.168.10.90'):
+    def __init__(self, queues=['lists_queue', 'control_queue'],
+                 ip='192.168.10.90'):
         """
         Creates a publisher class to a message queue.
 
-        :param name: The name of the desired queue.
+        :param queues: The list of queues
         :param ip: The IP of the RabbitMQ server.
         """
-        params = pika.ConnectionParameters(host=ip)
+        params = pika.ConnectionParameters(host=ip, channel_max=20,
+                                           connection_attempts=10,
+                                           retry_delay=0.5)
         connection = pika.BlockingConnection(params)
         self.channel = connection.channel()
 
-    def declare_queue(self, name):
+        for queue in queues:
+            print 'delcaring: ', queue
+            self._declare_queue(queue)
+
+    def _declare_queue(self, name):
         """
         Creates a queue in the messaging server.
         """

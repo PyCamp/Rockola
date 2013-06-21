@@ -7,7 +7,7 @@ import json
 import requests
 
 def play_new_song(url, newsong):
-    """se usa para avisarle a shiva que reproduzca una nueva cancion"""
+    """se usa para avisarle a player que reproduzca una nueva cancion"""
     data = json.dumps({"song_id" : newsong[0]})    
     requests.post(url, data = data)
     ##aca va el raise status de request
@@ -16,39 +16,53 @@ def play_new_song(url, newsong):
 
 current_votes = votos.VoteManager()
 
+#armamos las conecciones a las colas de entrada y salida
 control_name = queue_manager.get_queue_name('control')
 lists_name = queue_manager.get_queue_name('lists')
 
-cmd_receiver = queue_manager.Receiver(control_name)
-lists_receiver = queue_manager.Receiver(lists_name)
+receiver = queue_manager.Queue()
 
-lists_sender = queue_manager.Publisher(lists_name)
-
-
-# read data from rabbitMQ
-
-# parse json
 
 while True:
-    new_vote = cmd_receiver.receive()
-    print new_vote
+    #Busca un nuevo voto y lo transforma
+    new_vote = receiver.receive(control_name)
     new_vote =  json.loads(new_vote)
+
     if "votar" in new_vote["operation"]:
+        #si la operacion es un voto lo agrega
         current_votes.add_vote(new_vote)
+        
+        # Busca las 5 canciones mas votas y las 10 ultimas agregadas    
         top = current_votes.top()
         ultimos = current_votes.ultimos()
-        updatedata = {"top": top, "last": ultimos}
-        print updatedata
-        lists_sender.send(json.dumps(updatedata))
-        # Genera las dos listas Top y last
+        
+        #parsea y envia las listas de top y last
+        receiver.send(lists_name ,json.dumps({"top": top, "last": ultimos}))
+
     elif "necesitolista" in new_vote["operation"]:
-        pass
+        # Busca las 5 canciones mas votas y las 10 ultimas agregadas    
+        top = current_votes.top()
+        ultimos = current_votes.ultimos()
+
+        #parsea y envia las listas de top y last
+        updatedata = {"top": top, "last": ultimos}
+        receiver.send(lists_name ,json.dumps({"top": top, "last": ultimos}))
+
     elif "nuevacancion" in new_vote["operation"]:
+        #elimina la cancion actual de la lista de canciones
         current_votes.endofsong(new_vote["current"])
+        
+        #recalcula el top y devuelve la primera cancion
         newsong = current_votes.top()[0]
+
+        #llama a la api de player y le pide una nueva cancion
         play_new_song(new_vote["url"],newsong)
 
-
+    if current_votes.new_top():
+        current_votes.endofsong(current_votes.last_head)
+        newsong = current_votes.top()[0]
+        play_new_song(new_vote["url"],newsong)
+    
 
 
 #¿Almacena cada tanto en un sqlite?
