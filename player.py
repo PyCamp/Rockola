@@ -36,27 +36,35 @@ class VLCController(object):
 class ShivaClient(object):
 
     PORT = '9002'
-    URL = 'localhost'
+    URL = 'avioncito'
     def __init__(self):
         self.base_url =  'http://%s:%s/' %(self.URL,self.PORT)
         self.artists = {}
         for artist in self.get_artists():
             artist_id, name = artist['id'], artist['name']
             self.artists[artist_id] = name
+        self.artists[None] = ''
 
     def _request(self, command):
+
         r = urlopen(self.base_url + command)
         data = r.read()
         return json.loads(data)
 
     def get_tracks(self, ids):
+        
         tracks = self._request('tracks')
+
         response = {}
         for track in tracks:
             track_id = track['id']
             if track_id in ids:
-                track_title, artist_id = track['name'], track['artist']['id']
-                artist = self.artist_id[artist_id]
+                track_title = track['title']
+                if track['artist'] is not None:
+                    artist_id = track['artist']['id']
+                else:
+                    artist_id = None
+                artist = self.artists[artist_id]
                 response[track_id] = {'title': track_title,
                                       'artist': artist}
         return response

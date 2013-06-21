@@ -24,10 +24,8 @@ class ReceiveListProcess(object):
     def run(self):
         p = Process(target=self.receive_loop)
         p.start()
-        p.join()
+
 
     def stop(self):
         self.stopping = False
 
-rl = ReceiveListProcess()
-rl.run()

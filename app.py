@@ -5,15 +5,20 @@ from flask import Flask, request
 from flask import render_template
 from msgs_queue import queue_manager
 from player import ShivaClient, VLCController
-
+from msgs_queue.receive_list_process import ReceiveListProcess
 app = Flask(__name__)
 app.debug = True
 
+
 shiva = ShivaClient()
 vlc = VLCController()
+rl = ReceiveListProcess()
+rl.run()
+
 
 qm = queue_manager.Queue()
 cmdq = queue_manager.get_queue_name('control')
+flaskq = queue_manager.get_queue_name('flask')
 
 @app.route('/')
 def home():
@@ -60,10 +65,11 @@ def list_latest_songs():
 @app.route('/update_lists')
 def update_list():
     lists = json.loads(request.args['data'])
-    top, last = lists['top'], lists['lasts']
+    top, last = lists['top'], lists['last']
+
 
     ids = set([track_id for track_id, _ in top])
-    ids |= set(last)
+    ids |= set([track_id for track_id, _ in last])
 
     tracks_info = shiva.get_tracks(ids)
 
@@ -80,8 +86,7 @@ def update_list():
                      'artist': info['artist']}
 
     msg_to_ui = {'top': top, 'last': last}
-    print msg_to_ui
-    #FIXME: Pushear esta info a la UI
+    qm.send(flaskq, msg_to_ui)
 
     return "ok"
 
