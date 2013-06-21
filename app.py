@@ -6,13 +6,14 @@ from flask import redirect
 from flask import render_template
 from flask.ext.sse import sse
 from flask.ext.sse import send_event
-from player import ShivaClient
+from player import ShivaClient, VLCController
 
 app = Flask(__name__)
 app.debug = True
 app.register_blueprint(sse, url_prefix='/messages')
 
-#shiva = ShivaClient()
+shiva = ShivaClient()
+vlc = VLCController()
 
 @app.route('/')
 def home():
@@ -65,7 +66,7 @@ def update_list():
     print lists
     return "ok" 
 
-@app.route('/control/newsong')
+@app.route('/newsong')
 def new_song():
     """push new song in the player"""
     
