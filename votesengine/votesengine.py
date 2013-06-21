@@ -1,23 +1,41 @@
+#!/usr/bin/env python
+#-*- coding: utf-8 -*-
 
-def play_new_song():
+import votos
+import control_queue
+import json
+
+
+def play_new_song(songid):
     """se usa para avisarle a shiva que reproduzca una nueva cancion"""
     raise NotImplementedError()
 
+reciever = control_queue.Reciever()
+current_votes = votos.VoteManager()
 
-# instancia el VotesManager
 
 # read data from rabbitMQ
 
 # parse json
 
-# update track list
+while True:
+    new_vote = reciever.recieve()
+    print new_vote
+    new_vote =  json.loads(new_vote)
+    if "votar" in new_vote["operation"]:
+        current_votes.add_vote(new_vote)
+        top = current_votes.top()
+        ultimos = current_votes.ultimos()
+        updatedata = {"top": top, "last": ultimos}
+        print updatedata
+        # Genera las dos listas Top y last
+    elif "necesitolista" in new_vote["operation"]:
+        pass
+    elif "nuevacancion" in new_vote["operation"]:
+        newsong = current_votes.top()[0]
+        play_new_song(songid)
 
-# Verifica la Operacion, por ahora soporta Votos y Nueva cancion
 
-# Si Votos:
-# Genera las dos listas Top y last
-
-# Pushea top y last a RabitMQ???
 
 
 #¿Almacena cada tanto en un sqlite?
