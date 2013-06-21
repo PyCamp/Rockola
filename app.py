@@ -1,12 +1,8 @@
-import json
-from flask import Flask, request
 from flask import json
-from flask import url_for
-from flask import redirect
+from flask import Flask, request
 from flask import render_template
-from flask.ext.sse import sse
-from flask.ext.sse import send_event
-from player import ShivaClient
+from rabbit_sse import sse
+from rabbit_sse import send_event
 
 app = Flask(__name__)
 app.debug = True
