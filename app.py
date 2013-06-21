@@ -5,9 +5,10 @@ from flask import Flask, request
 from flask import render_template
 from msgs_queue import queue_manager
 from player import ShivaClient, VLCController
+import requests
 from msgs_queue.receive_list_process import ReceiveListProcess
 app = Flask(__name__)
-app.debug = True
+
 
 
 shiva = ShivaClient()
@@ -71,7 +72,7 @@ def update_list():
     ids |= set([track_id for track_id, _ in last])
 
     tracks_info = shiva.get_tracks(ids)
-
+    print lists, tracks_info
     def _fill_track_data(tracks):
         response = []
         for track_id, votos in top:
@@ -80,11 +81,18 @@ def update_list():
                              'title': info['title'],
                              'artist': info['artist'],
                              'votes': votos})
+        return response
 
     response = {'top': _fill_track_data(top),
                 'last': _fill_track_data(last)}
 
-    qm.send(flaskq, response)
+    payload = {
+        "message": json.dumps(response),
+        "channel": "base"
+    }
+    print payload
+    r=requests.post("http://192.168.10.90:8888/publish", data=payload)
+    print r.status_code
 
     return "ok"
 
@@ -109,4 +117,5 @@ def vote():
     return "ok"
 
 if __name__ == '__main__':
+    app.debug = True
     app.run('0.0.0.0')

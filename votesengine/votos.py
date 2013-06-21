@@ -11,14 +11,10 @@ class VoteManager(object):
     def __init__(self):
         self.votos = dict()
         self.tracks = list()  # Lista de IDs de track, en orden según aparición
-<<<<<<< HEAD
         self.track_timestamp = dict() # Timestamp con fecha en que se inserta
-        self.last_head = 0
-        self.head = 0  # El track_id que está primero
-=======
         self.last_head = 1
         self.head = 1  # El track_id que está primero
->>>>>>> 8d350817563e6e9ee8681cb05f4889ca04e24448
+
 
     def add_vote(self, voto):
         """ Regenera el diccionario con la cantidad de votos negativos y
@@ -93,7 +89,7 @@ class VoteManager(object):
         """ Retorna True si se debe cambiar la canción por la cantidad
         de votos negativos, de lo contrario False"""
         lista = self.votos[self.head]
-        cociente = len(lista[0]) / len(lista[1])  # negativos/positivos
+        cociente = len(lista[0]) / (len(lista[1])+1)  # negativos/positivos
         if cociente >= COCIENTE_CAMBIOTEMA:
             #self.endofsong()
             #self.head = self.votos()[0][0]
