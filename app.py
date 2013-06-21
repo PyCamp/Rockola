@@ -89,7 +89,7 @@ def update_list():
         "channel": "base"
     }
     print payload
-    r=requests.post("http://192.168.10.90:8888/publish", data=payload)
+    r=requests.post("http://localhost:8888/publish", data=payload)
     print r.status_code
 
     return "ok"

@@ -46,7 +46,7 @@ class VLCController(object):
 class ShivaClient(object):
 
     PORT = '9002'
-    URL = '192.168.10.90'
+    URL = 'localhost'
     def __init__(self):
         self.base_url =  'http://%s:%s/' %(self.URL,self.PORT)
         self.artists = {}
