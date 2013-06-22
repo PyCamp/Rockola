@@ -6,9 +6,9 @@
 	<title>Rockola</title>
 	<link rel="stylesheet"  href="/static/jquerymobile/jquery.mobile-1.0.1.min.css" />
   <script src="/static/jquerymobile/jquery.js"></script>
-	<script src="/static/jquerymobile/jquery.mobile-1.0.1.min.js"></script>
   <script type="text/javascript" src="/static/js/jquery.eventsource.js"></script>
   <script type="text/javascript" src="/static/js/jquery.sse.simple.js"></script>
+	<script src="/static/jquerymobile/jquery.mobile-1.0.1.min.js"></script>
 	<script src="/static/js/underscore.js"></script>
 	<script src="/static/js/backbone.js"></script>
 	<script src="/static/js/app.js"></script>
@@ -17,14 +17,8 @@
 <body> 
     <!-- PAGE Now playing -->
     <div data-role="page" id="nowplaying">
-        <div data-role="header" data-id="headerMenu">
-            <div data-role="navbar">
-                <ul>
-                    <li><a data-icon="star" class="ui-btn-active" href="#nowplaying" data-transition="none" >Current Playlist</a></li>
-                    <li><a data-icon="plus" href="#latests" data-transition="none">Last Voted</a></li>
-                    <li><a data-icon="search" href="#search" data-transition="none">Search</a></li>
-                </ul>
-            </div>
+        <div data-role="header">
+            <h1 data-role="title">Current Playlist</h1>
         </div>
         <div data-role="content">
             <ul data-role="listview" id="nowplayingsong">
@@ -46,18 +40,21 @@
                 </li>
             </ul>
         </div>
+        <div data-id="footer" data-position="fixed" data-role="footer">
+            <div data-role="navbar">
+                <ul>
+                    <li><a data-icon="star" class="ui-btn-active" href="#nowplaying">Current Playlist</a></li>
+                    <li><a data-icon="plus" href="#latests">Last Voted</a></li>
+                    <li><a data-icon="search" href="#search">Search</a></li>
+                </ul>
+            </div>
+        </div>
     </div>
     <!-- /PAGES Now Playing -->
     <!-- PAGE Latests -->
     <div data-role="page" id="latests" >
-        <div data-role="header" data-id="headerMenu">
-            <div data-role="navbar">
-                <ul>
-                    <li><a data-icon="star" href="#nowplaying" data-transition="none" data-direction="reverse">Current Playlist</a></li>
-                    <li><a data-icon="plus" href="#latests" class="ui-btn-active" data-transition="none">Last Voted</a></li>
-                    <li><a data-icon="search" href="#search" data-transition="none">Search</a></li>
-                </ul>
-            </div>
+        <div data-role="header">
+            <h1 data-role="title">Last voted</h1>
         </div>
         <div data-role="content">
             <ol data-role="listview" id="latestlistview">
@@ -83,26 +80,36 @@
                 </li>
             </ol>
         </div>
+        <div data-id="footer" data-position="fixed" data-role="footer">
+            <div data-role="navbar">
+                <ul>
+                    <li><a data-icon="star" href="#nowplaying">Current Playlist</a></li>
+                    <li><a data-icon="plus" class="ui-btn-active" href="#latests">Last Voted</a></li>
+                    <li><a data-icon="search" href="#search">Search</a></li>
+                </ul>
+            </div>
+        </div>
     </div>
     <!-- /PAGE Latests -->
     <!-- PAGE Search -->
     <div data-role="page" id="search">
-        <div data-role="header" data-id="headerMenu">
-            <div data-role="navbar">
-                <ul>
-                    <li><a data-icon="star" href="#nowplaying" data-transition="none" data-direction="reverse">Current Playlist</a></li>
-                    <li><a data-icon="plus" href="#latests" data-transition="none" data-direction="reverse">Last Voted</a></li>
-                    <li><a data-icon="search" href="#search" class="ui-btn-active" data-transition="none">Search</a></li>
-                </ul>
-            </div>
-        </div>
-        <div data-role="content">
-            <ul data-role="listview" data-filter="true" id="searchlist">
-                {% for track_id, data in songs.items() %}
-                <li><a href="#" data-icon="plus">{{track_id}} {{ data.title }} ({{ data.artist }})</a><a href="#" data-icon="plus" onclick="votar({{ track_id }}, true)"></a></li>
-                {% endfor %}
-            </ul>
-        </div>
+    <div data-role="header">
+    <h1 data-role="title">Search</h1>
+    </div>
+    <div data-role="content">
+        <ul data-role="listview" data-filter="true" id="searchlist">
+            {% for track_id, data in songs.items() %}
+            <li><a href="#" data-icon="plus">{{track_id}} {{ data.title }} ({{ data.artist }})</a><a href="#" data-icon="plus" onclick="votar({{ track_id }}, true)"></a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div data-id="footer" data-position="fixed" data-role="footer">
+    <div data-role="navbar">
+        <ul>
+            <li><a data-icon="star" href="#nowplaying">Current Playlist</a></li>
+            <li><a data-icon="plus" href="#latests">Last Voted</a></li>
+            <li><a data-icon="search" href="#search" class="ui-btn-active">Search</a></li>
+        </ul>
     </div>
     <!-- /PAGE Search -->
     <script type="application/x-template" id="currentsongtpl">
