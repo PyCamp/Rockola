@@ -25,8 +25,7 @@ class VoteManager(object):
         self.votos = dict()
         self.tracks = list()  # Lista de IDs de track, en orden según aparición
         self.track_timestamp = dict()  # Timestamp con fecha en que se inserta
-        self.last_head = 1
-        self.head = 1  # El track_id que está primero
+        self.head = 1  # El track_id que se está reproduciendo
 
 
     def add_vote(self, voto):
@@ -69,10 +68,18 @@ class VoteManager(object):
             delta = delta.days * 24 * 3600.0 + delta.seconds  # Segundos totales
             puntaje = votos / delta if delta else 0  # Evito ZeroDivisionError
             puntajes[track_id] = puntaje
-        top = sorted(self.votes().items(), key=lambda v: puntajes[v[0]],
-                reverse=True)
+        def sortkey(val):
+            track_id, votes = val
+            if track_id == self.head:
+                # Se está reproduciendo
+                return 99999999
+            else:
+                return puntajes[track_id]
+        top = sorted(self.votes().items(), key=sortkey, reverse=True)
         try:
-            self.head = top[0][0]
+            if self.head == 1:
+                # Solo si está el head por defecto
+                self.head = top[0][0]
         except KeyError:
             pass
         return top[:5]
@@ -88,7 +95,7 @@ class VoteManager(object):
         """ Elimina la canción más votada de la lista, o la canción
         correspondiente al track_id si es especificado"""
         if track_id is None:
-            track_id = self.top()[0][0]
+            track_id = self.head
         try:
             del(self.votos[track_id])
             self.tracks.remove(track_id)
