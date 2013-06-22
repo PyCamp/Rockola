@@ -88,6 +88,7 @@ def main():
 
         new_data = json.loads(new_vote)
         print 'QUERY: ', new_data
+        print 'MODE: ', votesengine.status
 
         operation = getattr(votesengine, new_data['operation'], None)
         if operation:
