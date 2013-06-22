@@ -22,7 +22,7 @@ def play_new_song(newsong):
 class VoteEngine(object):
 
     def __init__(self, newsongmethod=play_new_song):
-        self.status = 'IDLE'
+        self.status = 'RANDOM'
         self.newsong = newsongmethod
         self.current_votes = votos.VoteManager()
         rand = (randint(1, 50), 1)
@@ -41,7 +41,11 @@ class VoteEngine(object):
         return self._devolverlistas()
 
     def votarpositivo(self, vote):
-        return self._votos(vote)
+        self.status = 'PLAYLIST'
+        lists = self._votos(vote)
+        id_, vote = lists['top'][0]
+        self.newsong(id_)
+        return lists
 
     def votarnegativo(self, vote):
         return self._votos(vote)
