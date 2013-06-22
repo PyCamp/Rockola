@@ -1,3 +1,5 @@
+#!/urs/bin/env python
+#-*- coding: utf-8 -*-
 
 from time import time
 from flask import json
@@ -10,10 +12,9 @@ from msgs_queue.receive_list_process import ReceiveListProcess
 app = Flask(__name__)
 
 shiva = ShivaClient()
-vlc = VLCController()
+#vlc = VLCController()
 rl = ReceiveListProcess()
 rl.run()
-
 
 qm = queue_manager.Queue()
 cmdq = queue_manager.get_queue_name('control')
@@ -21,7 +22,9 @@ flaskq = queue_manager.get_queue_name('flask')
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    songs = shiva.get_tracks()
+    return render_template('index.html',
+            songs = songs)
 
 
 @app.route('/songs')
@@ -99,7 +102,7 @@ def new_song():
     """push new song in the player"""
     song_id = int(request.args['song_id'])
     track_info = shiva.get_tracks([song_id])[song_id]
-    vlc.add_song(track_info['path'])
+    #vlc.add_song(track_info['path'])
     return 'ok'
 
 
@@ -113,8 +116,9 @@ def vote():
     values = [id_track, operation, timestamp, id_session]
     data = dict(zip(keys, values))
     msg = json.dumps(data)
-    qm.send(cmdq, msg)
-    return "ok"
+    #qm.send(cmdq, msg)
+    #return "ok"
+    return msg 
 
 if __name__ == '__main__':
     app.debug = True
