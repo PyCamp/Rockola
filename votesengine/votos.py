@@ -76,6 +76,7 @@ class VoteManager(object):
             else:
                 return puntajes[track_id]
         top = sorted(self.votes().items(), key=sortkey, reverse=True)
+        top = [(track_id, int(100 * puntajes[track_id])) for track_id, votos in top]
         try:
             if self.head == 1:
                 # Solo si está el head por defecto
@@ -88,7 +89,7 @@ class VoteManager(object):
         """ Retorna una lista de tuplas track/puntaje ordenadas según
         la primera vez que fueron votados """
         votos = self.votes()
-        tracks = [(track, votos[track]) for track in self.tracks]
+        tracks = [(track, int(100 * puntajes[track])) for track in self.tracks]
         return tracks[-10:]
 
     def endofsong(self, track_id=None):
@@ -100,6 +101,8 @@ class VoteManager(object):
             del(self.votos[track_id])
             self.tracks.remove(track_id)
         except KeyError:
+            pass
+        except ValueError:
             pass
         else:
             try:
