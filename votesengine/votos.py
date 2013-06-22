@@ -25,7 +25,6 @@ class VoteManager(object):
         self.votos = dict()
         self.tracks = list()  # Lista de IDs de track, en orden según aparición
         self.track_timestamp = dict()  # Timestamp con fecha en que se inserta
-        self.head = 1  # El track_id que se está reproduciendo
 
 
     def add_vote(self, voto):
@@ -72,7 +71,7 @@ class VoteManager(object):
             track_id, votes = val
             if track_id == self.head:
                 # Se está reproduciendo
-                return 99999999
+                return a
             else:
                 return puntajes[track_id]
         top = sorted(self.votes().items(), key=sortkey, reverse=True)
