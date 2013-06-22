@@ -58,10 +58,10 @@ def update_list():
     ids |= set([track_id for track_id, _ in last])
 
     tracks_info = shiva.get_tracks(ids)
-    print lists, tracks_info
+    #print lists, tracks_info
     def _fill_track_data(tracks):
         response = []
-        for track_id, votos in top:
+        for track_id, votos in tracks:
             info = tracks_info[track_id]
             response.append({'id' : track_id,
                              'title': info['title'],

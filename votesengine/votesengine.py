@@ -68,6 +68,12 @@ while True:
         current_votes.endofsong(current_votes.head)
         newsong = current_votes.top()[0][0]
         play_new_song(newsong)
+        # Busca las 5 canciones mas votadas y las 10 ultimas agregadas
+        top = current_votes.top()
+        ultimos = current_votes.ultimos()
+        #parsea y envia las listas de top y last
+        updatedata = {"top": top, "last": ultimos}
+        receiver.send(lists_name, json.dumps(updatedata))
 
 
 
