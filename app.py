@@ -12,7 +12,7 @@ from msgs_queue.receive_list_process import ReceiveListProcess
 app = Flask(__name__)
 
 shiva = ShivaClient()
-#vlc = VLCController()
+vlc = VLCController()
 rl = ReceiveListProcess()
 rl.run()
 
@@ -50,7 +50,6 @@ def update_latest_songs():
     ]
 
     data = dict(message=songs)
-    #send_event("latest", json.dumps(data), channel='rockola')
     return ""
 
 
@@ -102,7 +101,7 @@ def new_song():
     """push new song in the player"""
     song_id = int(request.args['song_id'])
     track_info = shiva.get_tracks([song_id])[song_id]
-    #vlc.add_song(track_info['path'])
+    vlc.add_song(track_info['path'])
     return 'ok'
 
 
@@ -116,9 +115,8 @@ def vote():
     values = [id_track, operation, timestamp, id_session]
     data = dict(zip(keys, values))
     msg = json.dumps(data)
-    #qm.send(cmdq, msg)
-    #return "ok"
-    return msg 
+    qm.send(cmdq, msg)
+    return "ok"
 
 if __name__ == '__main__':
     app.debug = True
