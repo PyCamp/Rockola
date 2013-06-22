@@ -35,10 +35,10 @@ class VoteEngine(object):
         self.status = 'IDLE'
         self.newsong = newsongmethod
         self.current_votes = votos.VoteManager()
-        self.random_list = None         
+        self.random_list = {'top':[(randint(1,50),1)],'last':[]}
 
     def nuevacancion(self,new_json= None):
-        if len(self.current_votos.votos) == 0:
+        if len(self.current_votes.votos) == 0:
             self.status = 'RANDOM'
             self.random_list = {'top':[(randint(1,50),1)],'last':[]}
         else:
@@ -58,9 +58,9 @@ class VoteEngine(object):
     def necesitolista(self, new_json= None):
         self._devolverlistas()
 
-    def _devolverlistas(self)
+    def _devolverlistas(self):
         if self.status == 'RANDOM':
-            return self.random_list()
+            return self.random_list
 
 
 
@@ -74,7 +74,8 @@ while True:
 
     operation = getattr(votesengine, new_data['operation'], None)
     if operation:
-        operation(new_data)
+        response = operation(new_data)
+        receiver.send(lists_name, json.dumps(response))
     else:
         print "Operation Not Implemented" + new_data['operation']
 
