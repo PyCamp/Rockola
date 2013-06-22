@@ -26,7 +26,7 @@ app.CurrentSongView = Backbone.View.extend({
   },
   addVote: function(e) {
     // send add vote request
-    alert('Nuevo voto negativo para ' + this.model.get('artist'));
+    //alert('Nuevo voto negativo para ' + this.model.get('artist'));
     $.get('/vote', {track_id: this.model.get('id'), operation: 'votarnegativo'});
     e.preventDefault();
   },
@@ -50,7 +50,7 @@ app.NowPlayingView = Backbone.View.extend({
   },
   addVote: function(e) {
     // send add vote request
-    alert('Nuevo voto negativo para ' + this.model.get('artist'));
+    //alert('Nuevo voto negativo para ' + this.model.get('artist'));
     e.preventDefault();
     $.get('/vote', {track_id: this.model.get('id'), operation: 'votarnegativo'});
   },
@@ -73,7 +73,7 @@ app.LatestItemView = Backbone.View.extend({
   },
   addVote: function(e) {
     // send add vote request
-    alert('Nuevo voto para ' + this.model.get('artist'));
+    //alert('Nuevo voto para ' + this.model.get('artist'));
     $.get('/vote', {track_id: this.model.get('id'), operation: 'votarpositivo'});
     e.preventDefault();
   },
@@ -116,7 +116,7 @@ app.SearchItemView = Backbone.View.extend({
   },
   onClick: function(e) {
     // send add new song request
-    alert('New song request ' + this.model.get('artist'));
+    //alert('New song request ' + this.model.get('artist'));
     $.get('/vote', {track_id: this.model.get('id'), operation: 'votopositivo'});
     e.preventDefault();
   },

@@ -57,7 +57,7 @@ class VoteManager(object):
             dicc[track] = len(lista[1]) - len(lista[0])  # positivos - negativos
         return dicc
 
-    @rellenar
+    #@rellenar
     def top(self):
         """ Retorna una lista ordenada con tuplas que contienen el
         track_id y su puntaje """
@@ -75,10 +75,11 @@ class VoteManager(object):
             track_id, votes = val
             if track_id == self.head:
                 # Se está reproduciendo
-                return 99999999
+                return 0.99999999
             else:
                 return puntajes[track_id]
         top = sorted(self.votes().items(), key=sortkey, reverse=True)
+        top = [(track_id, int(100 * puntajes[track_id])) for track_id, votos in top]
         try:
             if self.head == 1:
                 # Solo si está el head por defecto
@@ -103,6 +104,8 @@ class VoteManager(object):
             del(self.votos[track_id])
             self.tracks.remove(track_id)
         except KeyError:
+            pass
+        except ValueError:
             pass
         else:
             try:
