@@ -35,11 +35,23 @@ class VLCController(object):
         urlopen(s)
 
     def get_remaining_time(self):
-        status_raw = urlopen(self.base_url).read()
-        status = json.loads(status_raw)
-        if 'time' in status:
-            return status['length'] - status['time']
+        def get_value(param, a):
+            try:
+                key = '"'+param+'":'
+                b = a[a.find(key)+len(key):]
+                value = int(b[:b.find(',')])
+                return value
+            except:
+                print 'No time'
+                return None
+
+        a = urlopen(self.base_url).read()
+        stime = get_value('time', a)
+        length = get_value('length', a)
+        if stime and length:
+            return length - stime
         else:
+            print a
             return 0
 
 
@@ -78,11 +90,9 @@ class ShivaClient(object):
                 response[track_id] = {'title': track_title,
                                       'artist': artist,
                                       'path': track['files']['audio/mp3'].replace('http://127.0.0.1:8001/',
-                                                                         #'/media/jtrad/Rockola/')}
-                                                                         '/media/Rockola/')}
-        
-	print response
-	return response
+                                                                         '/home/tulku/Music/')}
+        print response
+        return response
 
     def get_artists(self):
         return self._request('artists')

@@ -15,7 +15,7 @@ else
   tmux new-window -t rockola:3 -n votesengine
 fi
 
-tmux send-keys -t rockola:2 "cd ~/shiva-server; source .virtualenv/bin/activate; shiva-server" C-m
+tmux send-keys -t rockola:2 "cd ~/Repos/shiva-server; source .virtualenv/bin/activate; shiva-server" C-m
 tmux send-keys -t rockola:0 "source bin/activate; twistd -n cyclone-sse --amqp-host=localhost -l 0" C-m
 sleep 2
 tmux send-keys -t rockola:1 "source bin/activate; gunicorn -k gevent -b 0.0.0.0:5000 --debug app:app" C-m
