@@ -27,6 +27,7 @@ class VoteEngine(object):
         self.current_votes = votos.VoteManager()
         rand = (randint(1, 50), 1)
         self.random_list = {'top': [rand], 'last': [rand]}
+        self.now_playing = -1
 
     def nuevacancion(self, new_json=None):
         if len(self.current_votes.votos) == 0:
@@ -34,7 +35,7 @@ class VoteEngine(object):
             rand = (randint(1, 50), 1)
             self.random_list = {'top': [rand], 'last': [rand]}
             id_, vote = rand
-            self.newsong(id_)
+            self._newsong(id_)
         else:
             self.status = 'PLAYLIST'
 
@@ -44,7 +45,7 @@ class VoteEngine(object):
         self.status = 'PLAYLIST'
         lists = self._votos(vote)
         id_, vote = lists['top'][0]
-        self.newsong(id_)
+        self._newsong(id_)
         return lists
 
     def votarnegativo(self, vote):
@@ -64,7 +65,13 @@ class VoteEngine(object):
             top = self.current_votes.top()
             last = self.current_votes.last()
             return {'top': top, 'last': last}
-            
+     
+    def _newsong(self, id_):
+        if self.now_playing == id_:
+            pass
+        else:
+            self.newsong(id_)
+            self.now_playing = _id
 
 def main():
     sleep(6)
