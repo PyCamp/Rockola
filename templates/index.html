@@ -17,10 +17,10 @@
 <body> 
     <!-- PAGE Now playing -->
     <div data-role="page" id="nowplaying">
-        <div data-role="header" data-id="headerMenu" data-position="fixed">
+        <div data-role="header" data-id="headerMenu">
             <div data-role="navbar">
                 <ul>
-                    <li><a data-icon="star" class="ui-btn-active" href="#nowplaying" data-transition="slide" >Current Playlist</a></li>
+                    <li><a data-icon="star" class="ui-btn-active ui-state-persist" href="#nowplaying" data-transition="slide" >Current Playlist</a></li>
                     <li><a data-icon="plus" href="#latests" data-transition="slide">Last Voted</a></li>
                     <li><a data-icon="search" href="#search" data-transition="slide">Search</a></li>
                 </ul>
@@ -40,11 +40,11 @@
     <!-- /PAGES Now Playing -->
     <!-- PAGE Latests -->
     <div data-role="page" id="latests" >
-        <div data-role="header" data-id="headerMenu" data-position="fixed">
+        <div data-role="header" data-id="headerMenu">
             <div data-role="navbar">
                 <ul>
                     <li><a data-icon="star" href="#nowplaying" data-transition="slide" data-direction="reverse">Current Playlist</a></li>
-                    <li><a data-icon="plus" href="#latests" class="ui-btn-active" data-transition="slide">Last Voted</a></li>
+                    <li><a data-icon="plus" href="#latests" class="ui-btn-active ui-state-persist" data-transition="slide">Last Voted</a></li>
                     <li><a data-icon="search" href="#search" data-transition="slide">Search</a></li>
                 </ul>
             </div>
@@ -58,12 +58,12 @@
     <!-- /PAGE Latests -->
     <!-- PAGE Search -->
     <div data-role="page" id="search">
-        <div data-role="header" data-id="headerMenu" data-position="fixed">
+        <div data-role="header" data-id="headerMenu">
             <div data-role="navbar">
                 <ul>
                     <li><a data-icon="star" href="#nowplaying" data-transition="slide" data-direction="reverse">Current Playlist</a></li>
                     <li><a data-icon="plus" href="#latests" data-transition="slide" data-direction="reverse">Last Voted</a></li>
-                    <li><a data-icon="search" href="#search" class="ui-btn-active" data-transition="slide">Search</a></li>
+                    <li><a data-icon="search" href="#search" class="ui-btn-active ui-state-persist" data-transition="slide">Search</a></li>
                 </ul>
             </div>
         </div>
