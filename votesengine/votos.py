@@ -55,7 +55,7 @@ class VoteManager(object):
             dicc[track] = len(lista[1]) - len(lista[0])  # positivos - negativos
         return dicc
 
-    @rellenar
+    #@rellenar
     def top(self):
         """ Retorna una lista ordenada con tuplas que contienen el
         track_id y su puntaje """
@@ -72,7 +72,7 @@ class VoteManager(object):
             track_id, votes = val
             if track_id == self.head:
                 # Se está reproduciendo
-                return 99999999
+                return 0.99999999
             else:
                 return puntajes[track_id]
         top = sorted(self.votes().items(), key=sortkey, reverse=True)
@@ -89,7 +89,7 @@ class VoteManager(object):
         """ Retorna una lista de tuplas track/puntaje ordenadas según
         la primera vez que fueron votados """
         votos = self.votes()
-        tracks = [(track, int(100 * puntajes[track])) for track in self.tracks]
+        tracks = [(track, votos[track]) for track in self.tracks]
         return tracks[-10:]
 
     def endofsong(self, track_id=None):
