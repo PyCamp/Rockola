@@ -20,7 +20,7 @@
         <div data-role="header" data-id="headerMenu">
             <div data-role="navbar">
                 <ul>
-                    <li><a data-icon="star" class="ui-btn-active ui-state-persist" href="#nowplaying" data-transition="none" >Current Playlist</a></li>
+                    <li><a data-icon="star" class="ui-btn-active" href="#nowplaying" data-transition="none" >Current Playlist</a></li>
                     <li><a data-icon="plus" href="#latests" data-transition="none">Last Voted</a></li>
                     <li><a data-icon="search" href="#search" data-transition="none">Search</a></li>
                 </ul>
@@ -28,12 +28,22 @@
         </div>
         <div data-role="content">
             <ul data-role="listview" id="nowplayingsong">
-                <!-- Now Playing -->
+                <li data-theme="a">
+                    <a href="#">
+                        <h3>1. Música 1 <span class="ui-li-count">12</span></h3>
+                        <p><strong>Artista, Album</strong></p>
+                        <p>00:15 - 4:35</p>
+                    </a>
+                    <a href="#" data-icon="minus" data-theme="b">minus</a>
+                </li>
             </ul>
             <br />
             <br/>
             <ul data-role="listview" id="nowplayinglist">
-                <!-- Next Songs -->
+                <li>
+                    <a href="#">Arjona 5 <span class="ui-li-count">6</span></a>
+                    <a href="#" data-icon="plus" data-theme="a">plus</a>
+                </li>
             </ul>
         </div>
     </div>
@@ -44,14 +54,33 @@
             <div data-role="navbar">
                 <ul>
                     <li><a data-icon="star" href="#nowplaying" data-transition="none" data-direction="reverse">Current Playlist</a></li>
-                    <li><a data-icon="plus" href="#latests" class="ui-btn-active ui-state-persist" data-transition="none">Last Voted</a></li>
+                    <li><a data-icon="plus" href="#latests" class="ui-btn-active" data-transition="none">Last Voted</a></li>
                     <li><a data-icon="search" href="#search" data-transition="none">Search</a></li>
                 </ul>
             </div>
         </div>
         <div data-role="content">
             <ol data-role="listview" id="latestlistview">
-                <!-- Last song voted -->
+                <li>
+                    <a href="#">Música 1</a> <span class="ui-li-count">5</span>
+                    <a href="#" data-icon="plus">plus</a>
+                </li>
+                <li>
+                    <a href="#">Música 2 <span class="ui-li-count">5</span></a>
+                    <a href="#" data-icon="plus">plus</a>
+                </li>
+                <li>
+                    <a href="#">Música 3 <span class="ui-li-count">1</span></a>
+                    <a href="#" data-icon="plus">plus</a>
+                </li>
+                <li>
+                    <a href="#">Música 4 <span class="ui-li-count">5</span></a>
+                    <a href="#" data-icon="plus">plus</a>
+                </li>
+                <li>
+                    <a href="#">Arjona 5 <span class="ui-li-count">6</span></a>
+                    <a href="#" data-icon="plus">plus</a>
+                </li>
             </ol>
         </div>
     </div>
@@ -63,7 +92,7 @@
                 <ul>
                     <li><a data-icon="star" href="#nowplaying" data-transition="none" data-direction="reverse">Current Playlist</a></li>
                     <li><a data-icon="plus" href="#latests" data-transition="none" data-direction="reverse">Last Voted</a></li>
-                    <li><a data-icon="search" href="#search" class="ui-btn-active ui-state-persist" data-transition="none">Search</a></li>
+                    <li><a data-icon="search" href="#search" class="ui-btn-active" data-transition="none">Search</a></li>
                 </ul>
             </div>
         </div>
