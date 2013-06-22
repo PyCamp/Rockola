@@ -65,7 +65,7 @@ while True:
         play_new_song(newsong)
 
     if current_votes.new_top():
-        current_votes.endofsong(current_votes.last_head)
+        current_votes.endofsong(current_votes.head)
         newsong = current_votes.top()[0][0]
         play_new_song(newsong)
 
