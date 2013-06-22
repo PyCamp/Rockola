@@ -89,7 +89,7 @@ class VoteManager(object):
         la primera vez que fueron votados """
         votos = self.votes()
         tracks = [(track, votos[track]) for track in self.tracks]
-        return list(reversed(tracks))[:10]
+        return tracks[-10:]
 
     def endofsong(self, track_id=None):
         """ Elimina la canción más votada de la lista, o la canción
