@@ -25,7 +25,7 @@ class VLCController(object):
         self.wd = NextSongWatcher(self)
         self.wd.run()
 
-    def add_song(self, path, play_it_now=False):
+    def add_song(self, path):
         '''
             Add a new song to the playlist and play it
         '''
@@ -78,8 +78,11 @@ class ShivaClient(object):
                 response[track_id] = {'title': track_title,
                                       'artist': artist,
                                       'path': track['files']['audio/mp3'].replace('http://127.0.0.1:8001/',
-                                                                         '/media/Rockola')}
-        return response
+                                                                         #'/media/jtrad/Rockola/')}
+                                                                         '/media/Rockola/')}
+        
+	print response
+	return response
 
     def get_artists(self):
         return self._request('artists')

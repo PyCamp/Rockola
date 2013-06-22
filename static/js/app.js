@@ -1,44 +1,67 @@
 var app = {}
 window.app = app;
 
+
 app.TrackModel = Backbone.Model.extend({
   defaults: {
     'artist': '',
     'title': '',
     'duration': '',
-    'upvotes': 0,
+    'votes': 0,
     'downvotes': 0
   },
 });
+
 
 app.TrackCollection = Backbone.Collection.extend({
   model: app.TrackModel
 });
 
 
-app.NowPlayingView = Backbone.View.extend({
+app.CurrentSongView = Backbone.View.extend({
+  el: '#nowplayingsong',
   initialize: function(options) {
-    this.$el = $('#latests');
-    this.collection = options.collection;
-    //this.getTracks();
+    this.model = options.model;
+    this.model.bind('change', this.render, this);
+  },
+  addVote: function(e) {
+    // send add vote request
+    alert('Nuevo voto negativo para ' + this.model.get('artist'));
+    e.preventDefault();
   },
   render: function() {
-    var tpls = "";
-    this.collection.each(function(model) {
-      tpls += _.template('<li><a href="#"><%= artist %> - <%= title %></a></li>', model.toJSON());
-    });
-    this.$el.html(tpls).listview('refresh');
+    var tpl = $('#currentsongtpl').html();
+    this.$el.html(_.template(tpl, this.model.toJSON()));
+    this.$el.hasClass('ui-listview') && this.$el.listview('refresh');
+    this.$el.find('.vote-down').click($.proxy(this.addVote, this));
+    return this;
+  }
+});
+
+
+app.NowPlayingView = Backbone.View.extend({
+  initialize: function(options) {
+    this.$el = $('#nowplayinglist');
+    this.collection = options.collection;
+    this.collection.on('add', this.render, this);
+    this.collection.on('reset', this.render, this);
+    //this.getTracks();
   },
-  getTracks: function() {
+  addVote: function(e) {
+    // send add vote request
+    alert('Nuevo voto para ' + this.model.get('artist'));
+    $.post('/vote', {track_id: this.model.get('id'), operation: 'votonegativo'});
+    e.preventDefault();
+  },
+  render: function() {
+    this.$el.empty();
     var self = this;
-    var source = new EventSource('/messages')
-    source.addEventListener('nowplaying', function(e) {
-      var response = JSON.parse(e.data);
-      _.each(response, function(model) {
-        self.collection.add(model);
-      });
+    this.collection.each(function(song) {
+      var latestItemView = new app.LatestItemView({model: song});
+      self.$el.append(latestItemView.render().el);
     });
-  },
+    this.$el.hasClass('ui-listview') && this.$el.listview('refresh');
+  }
 });
 
 
@@ -46,16 +69,15 @@ app.LatestItemView = Backbone.View.extend({
   tagName: 'li',
   initialize: function(options) {
     this.model = options.model;
-    //_.bindAll(this, this.render);
-    
   },
   addVote: function(e) {
-    // send add new song request
+    // send add vote request
     alert('Nuevo voto para ' + this.model.get('artist'));
+    $.post('/vote', {track_id: this.model.get('id'), operation: 'votopositivo'});
     e.preventDefault();
   },
   render: function() {
-    this.$el.html(_.template('<a href="#"><%= artist %> - <%= title %><span class="ui-li-count"><%= upvotes %></span></a> <a href="#" class="add-vote" data-icon="plus" data-theme="a">plus</a>', this.model.toJSON()));
+    this.$el.html(_.template('<a href="#"><%= artist %> - <%= title %><span class="ui-li-count"><%= votes %></span></a> <a href="#" class="add-vote" data-icon="plus" data-theme="a">plus</a>', this.model.toJSON()));
     this.$el.find('.add-vote').click($.proxy(this.addVote, this));
     return this;
   }
@@ -68,7 +90,6 @@ app.LatestView = Backbone.View.extend({
     this.collection = options.collection;
     this.collection.on('add', this.render, this);
     this.collection.on('reset', this.render, this);
-    //this.getTracks();
   },
   render: function() {
     this.$el.empty();
@@ -77,18 +98,13 @@ app.LatestView = Backbone.View.extend({
       var latestItemView = new app.LatestItemView({model: song});
       self.$el.append(latestItemView.render().el);
     });
-    this.$el.listview('refresh');
+    this.$el.hasClass('ui-listview') && this.$el.listview('refresh');
   },
-  getTracks: function() {
-    var self = this;
-    var source = new EventSource('http://192.168.10.63:8888/')
-    source.addEventListener('base', function(e) {
-      var response = JSON.parse(e.data);
-      _.each(response, function(model) {
-        self.collection.add(model);
-      });
+  parseMessage: function(data) {
+    _.each(response, function(model) {
+      self.collection.add(model);
     });
-  },
+  }
 });
 
 
@@ -100,6 +116,7 @@ app.SearchItemView = Backbone.View.extend({
   onClick: function(e) {
     // send add new song request
     alert('New song request ' + this.model.get('artist'));
+    //$.post('/newsong', {track_id: this.model.get('id'), operation: 'votopositivo'});
     e.preventDefault();
   },
   render: function() {
@@ -125,29 +142,36 @@ app.SearchTracksView = Backbone.View.extend({
       var searchItemView = new app.SearchItemView({model: song});
       self.$el.append(searchItemView.render().el);
     });
-    this.$el.listview('refresh');
+    this.$el.hasClass('ui-listview') && this.$el.listview('refresh');
   },
   getTracks: function() {
     // ajax call to retrive all songs.
   }
 });
 
+app.parseMessages = function(data){
+    var jsondata = JSON.parse(data);
+    app.currentSong.set(jsondata.top[0]);
+    jsondata.top.shift();
+    app.nowPlayingCollection.reset(jsondata.top);
+    app.latestCollection.reset(jsondata.latest);
+    console.log(jsondata.latest);
+};
 
 app.init = function() {
-  var songsCollection = new app.TrackCollection();
-  var latestCollection = new app.TrackCollection();
-  var nowPlayingCollection = new app.TrackCollection();
-  new app.SearchTracksView({collection: songsCollection});
-  new app.LatestView({collection: latestCollection});
-  new app.NowPlayingView({collection: nowPlayingCollection});
-  latestCollection.add([
-      {'id': 6,
-      'title': 'Smoke on the Waterrrrr',
-      'artist': 'Deep Thought',
-      'upvotes': '42'
-      },
-  ]);
-  songsCollection.add([
+  app.songsCollection = new app.TrackCollection();
+  app.latestCollection = new app.TrackCollection();
+  app.nowPlayingCollection = new app.TrackCollection();
+  app.currentSong = new app.TrackModel({});
+
+  new app.SearchTracksView({collection: app.songsCollection});
+  new app.LatestView({collection: app.latestCollection});
+  new app.NowPlayingView({collection: app.nowPlayingCollection});
+  new app.CurrentSongView({model: app.currentSong});
+
+  $.eventsource({label: 'base', url: 'http://localhost:8888/?channels=base', message: app.parseMessages});
+
+  app.songsCollection.add([
       {'id': 1,
       'title': 'Smoke on the Water',
       'artist': 'Deep Purple',
