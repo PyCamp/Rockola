@@ -41,7 +41,11 @@ class VoteEngine(object):
         return self._devolverlistas()
 
     def votarpositivo(self, vote):
-        return self._votos(vote)
+        self.status = 'PLAYLIST'
+        lists = self._votos(vote)
+        id_, vote = lists['top'][0]
+        self.newsong(id_)
+        return lists
 
     def votarnegativo(self, vote):
         return self._votos(vote)
