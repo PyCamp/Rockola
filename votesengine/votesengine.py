@@ -18,16 +18,6 @@ def play_new_song(newsong):
     ##aca va el raise status de request
     #raise NotImplementedError()
 
-sleep(6)
-
-
-#armamos las conexiones a las colas de entrada y salida
-control_name = queue_manager.get_queue_name('control')
-lists_name = queue_manager.get_queue_name('lists')
-
-receiver = queue_manager.Queue()
-
-
 
 class VoteEngine(object):
     
@@ -63,24 +53,28 @@ class VoteEngine(object):
             return self.random_list
 
 
+def main():
+    sleep(6)
+    #armamos las conexiones a las colas de entrada y salida
+    control_name = queue_manager.get_queue_name('control')
+    lists_name = queue_manager.get_queue_name('lists')
 
-votesengine = VoteEngine()
-while True:
-    #Busca un nuevo voto y lo transforma
-    new_vote = receiver.receive(control_name)
+    receiver = queue_manager.Queue()
 
-    new_data =  json.loads(new_vote)
-    print new_data
+    votesengine = VoteEngine()
+    while True:
+        #Busca un nuevo voto y lo transforma
+        new_vote = receiver.receive(control_name)
 
-    operation = getattr(votesengine, new_data['operation'], None)
-    if operation:
-        response = operation(new_data)
-        receiver.send(lists_name, json.dumps(response))
-    else:
-        print "Operation Not Implemented" + new_data['operation']
+        new_data = json.loads(new_vote)
+        print new_data
 
+        operation = getattr(votesengine, new_data['operation'], None)
+        if operation:
+            response = operation(new_data)
+            receiver.send(lists_name, json.dumps(response))
+        else:
+            print "Operation Not Implemented" + new_data['operation']
 
-
-
-
-
+if __name__ == '__main__':
+    main()
