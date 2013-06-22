@@ -26,8 +26,7 @@ class VoteManager(object):
         self.votos = dict()
         self.tracks = list()  # Lista de IDs de track, en orden según aparición
         self.track_timestamp = dict()  # Timestamp con fecha en que se inserta
-
-
+        self.head = 0
 
     def add_vote(self, voto):
         """ Regenera el diccionario con la cantidad de votos negativos y
