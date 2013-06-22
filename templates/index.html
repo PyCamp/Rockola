@@ -17,8 +17,15 @@
 <body> 
     <!-- PAGE Now playing -->
     <div data-role="page" id="nowplaying">
-        <div data-role="header">
-            <h1 data-role="title">Current Playlist</h1>
+        <div data-role="header" data-id="header" data-position="fixed">
+            <div data-role="navbar">
+                <ul>
+                    <li><a data-icon="star" class="ui-btn-active" href="#nowplaying">Current Playlist</a></li>
+                    <li><a data-icon="plus" href="#latests">Last Voted</a></li>
+                    <li><a data-icon="search" href="#search">Search</a></li>
+                </ul>
+            </div>
+            <span class="ui-title" />
         </div>
         <div data-role="content">
             <ul data-role="listview" id="nowplayingsong">
@@ -40,21 +47,19 @@
                 </li>
             </ul>
         </div>
-        <div data-id="footer" data-position="fixed" data-role="footer">
-            <div data-role="navbar">
-                <ul>
-                    <li><a data-icon="star" class="ui-btn-active" href="#nowplaying">Current Playlist</a></li>
-                    <li><a data-icon="plus" href="#latests">Last Voted</a></li>
-                    <li><a data-icon="search" href="#search">Search</a></li>
-                </ul>
-            </div>
-        </div>
     </div>
     <!-- /PAGES Now Playing -->
     <!-- PAGE Latests -->
     <div data-role="page" id="latests" >
-        <div data-role="header">
-            <h1 data-role="title">Last voted</h1>
+        <div data-role="header" data-id="header" data-position="fixed">
+            <div data-role="navbar">
+                <ul>
+                    <li><a data-icon="star" href="#nowplaying">Current Playlist</a></li>
+                    <li><a data-icon="plus" class="ui-btn-active" href="#latests">Last Voted</a></li>
+                    <li><a data-icon="search" href="#search">Search</a></li>
+                </ul>
+            </div>
+            <span class="ui-title" />
         </div>
         <div data-role="content">
             <ol data-role="listview" id="latestlistview">
@@ -80,36 +85,27 @@
                 </li>
             </ol>
         </div>
-        <div data-id="footer" data-position="fixed" data-role="footer">
-            <div data-role="navbar">
-                <ul>
-                    <li><a data-icon="star" href="#nowplaying">Current Playlist</a></li>
-                    <li><a data-icon="plus" class="ui-btn-active" href="#latests">Last Voted</a></li>
-                    <li><a data-icon="search" href="#search">Search</a></li>
-                </ul>
-            </div>
-        </div>
     </div>
     <!-- /PAGE Latests -->
     <!-- PAGE Search -->
     <div data-role="page" id="search">
-    <div data-role="header">
-    <h1 data-role="title">Search</h1>
-    </div>
-    <div data-role="content">
-        <ul data-role="listview" data-filter="true" id="searchlist">
-            {% for track_id, data in songs.items() %}
-            <li><a href="#" data-icon="plus">{{track_id}} {{ data.title }} ({{ data.artist }})</a><a href="#" data-icon="plus" onclick="votar({{ track_id }}, true)"></a></li>
-            {% endfor %}
-        </ul>
-    </div>
-    <div data-id="footer" data-position="fixed" data-role="footer">
-    <div data-role="navbar">
-        <ul>
-            <li><a data-icon="star" href="#nowplaying">Current Playlist</a></li>
-            <li><a data-icon="plus" href="#latests">Last Voted</a></li>
-            <li><a data-icon="search" href="#search" class="ui-btn-active">Search</a></li>
-        </ul>
+        <div data-role="header" data-id="header" data-position="fixed">
+            <div data-role="navbar">
+                <ul>
+                    <li><a data-icon="star" href="#nowplaying">Current Playlist</a></li>
+                    <li><a data-icon="plus" href="#latests">Last Voted</a></li>
+                    <li><a data-icon="search" href="#search" class="ui-btn-active">Search</a></li>
+                </ul>
+            </div>
+            <span class="ui-title" />
+        </div>
+        <div data-role="content">
+            <ul data-role="listview" data-filter="true" id="searchlist">
+                {% for track_id, data in songs.items() %}
+                <li><a href="#" data-icon="plus">{{track_id}} {{ data.title }} ({{ data.artist }})</a><a href="#" data-icon="plus" onclick="votar({{ track_id }}, true)"></a></li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
     <!-- /PAGE Search -->
     <script type="application/x-template" id="currentsongtpl">
