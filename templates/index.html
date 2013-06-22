@@ -17,87 +17,55 @@
 <body> 
     <!-- PAGE Now playing -->
     <div data-role="page" id="nowplaying">
-        <div data-role="header" data-id="header" data-position="fixed">
+        <div data-role="header" data-id="headerMenu" data-position="fixed">
             <div data-role="navbar">
                 <ul>
-                    <li><a data-icon="star" class="ui-btn-active" href="#nowplaying">Current Playlist</a></li>
-                    <li><a data-icon="plus" href="#latests">Last Voted</a></li>
-                    <li><a data-icon="search" href="#search">Search</a></li>
+                    <li><a data-icon="star" class="ui-btn-active" href="#nowplaying" data-transition="slide" >Current Playlist</a></li>
+                    <li><a data-icon="plus" href="#latests" data-transition="slide">Last Voted</a></li>
+                    <li><a data-icon="search" href="#search" data-transition="slide">Search</a></li>
                 </ul>
             </div>
-            <span class="ui-title" />
         </div>
         <div data-role="content">
             <ul data-role="listview" id="nowplayingsong">
-                <li data-theme="a">
-                    <a href="#">
-                        <h3>1. Música 1 <span class="ui-li-count">12</span></h3>
-                        <p><strong>Artista, Album</strong></p>
-                        <p>00:15 - 4:35</p>
-                    </a>
-                    <a href="#" data-icon="minus" data-theme="b">minus</a>
-                </li>
+                <!-- Now Playing -->
             </ul>
             <br />
             <br/>
             <ul data-role="listview" id="nowplayinglist">
-                <li>
-                    <a href="#">Arjona 5 <span class="ui-li-count">6</span></a>
-                    <a href="#" data-icon="plus" data-theme="a">plus</a>
-                </li>
+                <!-- Next Songs -->
             </ul>
         </div>
     </div>
     <!-- /PAGES Now Playing -->
     <!-- PAGE Latests -->
     <div data-role="page" id="latests" >
-        <div data-role="header" data-id="header" data-position="fixed">
+        <div data-role="header" data-id="headerMenu" data-position="fixed">
             <div data-role="navbar">
                 <ul>
-                    <li><a data-icon="star" href="#nowplaying">Current Playlist</a></li>
-                    <li><a data-icon="plus" class="ui-btn-active" href="#latests">Last Voted</a></li>
-                    <li><a data-icon="search" href="#search">Search</a></li>
+                    <li><a data-icon="star" href="#nowplaying" data-transition="slide" data-direction="reverse">Current Playlist</a></li>
+                    <li><a data-icon="plus" href="#latests" class="ui-btn-active" data-transition="slide">Last Voted</a></li>
+                    <li><a data-icon="search" href="#search" data-transition="slide">Search</a></li>
                 </ul>
             </div>
-            <span class="ui-title" />
         </div>
         <div data-role="content">
             <ol data-role="listview" id="latestlistview">
-                <li>
-                    <a href="#">Música 1</a> <span class="ui-li-count">5</span>
-                    <a href="#" data-icon="plus">plus</a>
-                </li>
-                <li>
-                    <a href="#">Música 2 <span class="ui-li-count">5</span></a>
-                    <a href="#" data-icon="plus">plus</a>
-                </li>
-                <li>
-                    <a href="#">Música 3 <span class="ui-li-count">1</span></a>
-                    <a href="#" data-icon="plus">plus</a>
-                </li>
-                <li>
-                    <a href="#">Música 4 <span class="ui-li-count">5</span></a>
-                    <a href="#" data-icon="plus">plus</a>
-                </li>
-                <li>
-                    <a href="#">Arjona 5 <span class="ui-li-count">6</span></a>
-                    <a href="#" data-icon="plus">plus</a>
-                </li>
+                <!-- Last song voted -->
             </ol>
         </div>
     </div>
     <!-- /PAGE Latests -->
     <!-- PAGE Search -->
     <div data-role="page" id="search">
-        <div data-role="header" data-id="header" data-position="fixed">
+        <div data-role="header" data-id="headerMenu" data-position="fixed">
             <div data-role="navbar">
                 <ul>
-                    <li><a data-icon="star" href="#nowplaying">Current Playlist</a></li>
-                    <li><a data-icon="plus" href="#latests">Last Voted</a></li>
-                    <li><a data-icon="search" href="#search" class="ui-btn-active">Search</a></li>
+                    <li><a data-icon="star" href="#nowplaying" data-transition="slide" data-direction="reverse">Current Playlist</a></li>
+                    <li><a data-icon="plus" href="#latests" data-transition="slide" data-direction="reverse">Last Voted</a></li>
+                    <li><a data-icon="search" href="#search" class="ui-btn-active" data-transition="slide">Search</a></li>
                 </ul>
             </div>
-            <span class="ui-title" />
         </div>
         <div data-role="content">
             <ul data-role="listview" data-filter="true" id="searchlist">
