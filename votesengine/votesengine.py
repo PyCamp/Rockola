@@ -5,9 +5,13 @@ import votos
 import queue_manager
 import json
 import requests
+<<<<<<< HEAD
 from random import randint
+=======
+import random
+>>>>>>> 567ad57f4640453c6061eaf8bcb078013091990a
 
-from time import sleep
+from time import sleep, time
 URL = "http://localhost:5000/"
 
 
@@ -82,6 +86,39 @@ while True:
 
 
 
+<<<<<<< HEAD
+=======
+        #parsea y envia las listas de top y last
+        updatedata = {"top": top, "last": ultimos}
+        receiver.send(lists_name, json.dumps(updatedata))
+
+    elif "nuevacancion" in new_vote["operation"]:
+        #elimina la cancion actual de la lista de canciones
+        current_votes.endofsong()
+        #recalcula el top y devuelve la primera cancion
+        try:
+            newsong = current_votes.top()[0][0]
+        except IndexError:
+            id_ = random.randint(1, 100)
+            fake_vote = {'timestamp': time(), 'operation': 'votarpositivo',
+                         'id_session': '127.0.0.1', 'id_track': id_}
+            current_votes.add_vote(fake_vote)
+            newsong = current_votes.top()[0][0]
+
+        #llama a la api de player y le pide una nueva cancion
+        play_new_song(newsong)
+
+    if current_votes.new_top():
+        current_votes.endofsong(current_votes.head)
+        newsong = current_votes.top()[0][0]
+        play_new_song(newsong)
+        # Busca las 5 canciones mas votadas y las 10 ultimas agregadas
+        top = current_votes.top()
+        ultimos = current_votes.ultimos()
+        #parsea y envia las listas de top y last
+        updatedata = {"top": top, "last": ultimos}
+        receiver.send(lists_name, json.dumps(updatedata))
+>>>>>>> 567ad57f4640453c6061eaf8bcb078013091990a
 
 
 

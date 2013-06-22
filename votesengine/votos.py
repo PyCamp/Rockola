@@ -2,6 +2,7 @@
 #-*- coding: utf-8 -*-
 
 import datetime
+import time
 from random import randint
 
 COCIENTE_CAMBIOTEMA = 0.5  # Cambia el tema si tiene 50% negativos
@@ -27,6 +28,7 @@ class VoteManager(object):
         self.track_timestamp = dict()  # Timestamp con fecha en que se inserta
 
 
+
     def add_vote(self, voto):
         """ Regenera el diccionario con la cantidad de votos negativos y
         positivos de cada track_id """
@@ -45,6 +47,7 @@ class VoteManager(object):
             # Si votó por lo contrario, borramos el voto anterior
             lista[not calificacion].remove(sessid)
         lista[calificacion].add(sessid)
+        if self.head == 0: self.head = track_id
 
     def votes(self):
         """ Retorna un diccionario con la cantidad de votos (puede ser
@@ -54,27 +57,29 @@ class VoteManager(object):
             dicc[track] = len(lista[1]) - len(lista[0])  # positivos - negativos
         return dicc
 
-    @rellenar
+    #@rellenar
     def top(self):
         """ Retorna una lista ordenada con tuplas que contienen el
         track_id y su puntaje """
         #top = sorted(self.votes().items(), key=lambda v: v[1], reverse=True)[:5]
         puntajes = dict()
         for track_id, votos in self.votes().items():
-            created = datetime.datetime.fromtimestamp(
-                    self.track_timestamp[track_id])
-            delta = datetime.datetime.now() - created
-            delta = delta.days * 24 * 3600.0 + delta.seconds  # Segundos totales
+            #created = datetime.datetime.fromtimestamp(
+            #        self.track_timestamp[track_id])
+            #delta = datetime.datetime.now() - created
+            #delta = delta.days * 24 * 3600.0 + delta.seconds  # Segundos totales
+            delta = time.time() - self.track_timestamp[track_id]
             puntaje = votos / delta if delta else 0  # Evito ZeroDivisionError
             puntajes[track_id] = puntaje
         def sortkey(val):
             track_id, votes = val
             if track_id == self.head:
                 # Se está reproduciendo
-                return a
+                return 99999
             else:
                 return puntajes[track_id]
         top = sorted(self.votes().items(), key=sortkey, reverse=True)
+        top = [(track_id, int(100 * puntajes[track_id])) for track_id, votos in top]
         try:
             if self.head == 1:
                 # Solo si está el head por defecto
@@ -99,6 +104,8 @@ class VoteManager(object):
             del(self.votos[track_id])
             self.tracks.remove(track_id)
         except KeyError:
+            pass
+        except ValueError:
             pass
         else:
             try:
