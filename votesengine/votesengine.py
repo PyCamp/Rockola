@@ -55,7 +55,6 @@ class VoteEngine(object):
 
     def _devolverlistas(self):
         if self.status == 'RANDOM':
-            print self.random_list
             return self.random_list
         elif self.status == 'PLAYLIST':
             top = self.current_votes.top()
@@ -77,12 +76,12 @@ def main():
         new_vote = receiver.receive(control_name)
 
         new_data = json.loads(new_vote)
-        print new_data
+        print 'QUERY: ', new_data
 
         operation = getattr(votesengine, new_data['operation'], None)
         if operation:
             response = operation(new_data)
-            print response
+            print 'ANS: ', response
             receiver.send(lists_name, json.dumps(response))
         else:
             print "Operation Not Implemented" + new_data['operation']
