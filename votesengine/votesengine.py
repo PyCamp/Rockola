@@ -46,18 +46,18 @@ class VoteEngine(object):
             return lists
 
     def votarpositivo(self, vote):
-        self.status = 'PLAYLIST'
-        lists = self._votos(vote)
-        id_, vote = lists['top'][0]
-        self._newsong(id_)
-        return lists
+        return self._votos(vote)
 
     def votarnegativo(self, vote):
         return self._votos(vote)
 
     def _votos(self, vote):
+        self.status = 'PLAYLIST'
         self.current_votes.add_vote(vote)
-        return self._devolverlistas()
+        lists = self._devolverlistas()
+        id_, vote = lists['top'][0]
+        self._newsong(id_)
+        return lists
 
     def necesitolista(self, new_json=None):
         return self._devolverlistas()
@@ -75,7 +75,7 @@ class VoteEngine(object):
             pass
         else:
             self.newsong(id_)
-            self.now_playing = _id
+            self.now_playing = id_
 
 def main():
     sleep(6)
