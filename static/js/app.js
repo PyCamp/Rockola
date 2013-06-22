@@ -169,7 +169,7 @@ app.init = function() {
   new app.NowPlayingView({collection: app.nowPlayingCollection});
   new app.CurrentSongView({model: app.currentSong});
 
-  $.eventsource({label: 'base', url: 'http://localhost:8888/?channels=base', message: app.parseMessages});
+  $.eventsource({label: 'base', url: 'http://192.168.10.58:8888/?channels=base', message: app.parseMessages});
 
   app.songsCollection.add([
       {'id': 1,
