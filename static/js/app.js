@@ -171,26 +171,6 @@ app.init = function() {
 
   $.eventsource({label: 'base', url: 'http://192.168.10.58:8888/?channels=base', message: app.parseMessages});
 
-  app.songsCollection.add([
-      {'id': 1,
-      'title': 'Smoke on the Water',
-      'artist': 'Deep Purple',
-      },
-      {'id': 2,
-      'title': 'Faithful',
-      'artist': 'Pearl Jam',
-      },
-      {'id': 3,
-      'title': 'No Way',
-      'artist': 'Pearl Jam',
-      },
-      {'id': 4,
-      'title': 'Daughter',
-      'artist': 'Pearl Jam',
-      },
-  ]);
-}
-
 
 $(document).ready(function() {
   app.init();

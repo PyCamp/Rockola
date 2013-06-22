@@ -27,32 +27,6 @@ def home():
             songs = songs)
 
 
-@app.route('/songs')
-def update_latest_songs():
-    """List latest added songs."""
-    songs = [
-        {'id': 1,
-        'title': 'Smoke on the Water',
-        'artist': 'Deep Purple',
-        },
-        {'id': 2,
-        'title': 'Faithful',
-        'artist': 'Pearl Jam',
-        },
-        {'id': 3,
-        'title': 'No Way',
-        'artist': 'Pearl Jam',
-        },
-        {'id': 4,
-        'title': 'Daughter',
-        'artist': 'Pearl Jam',
-        },
-    ]
-
-    data = dict(message=songs)
-    return ""
-
-
 @app.route('/songs/add')
 def add_song():
     """Add a song to be reproduced."""
