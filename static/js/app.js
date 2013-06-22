@@ -49,8 +49,8 @@ app.NowPlayingView = Backbone.View.extend({
   },
   addVote: function(e) {
     // send add vote request
-    alert('Nuevo voto para ' + this.model.get('artist'));
-    $.post('/vote', {track_id: this.model.get('id'), operation: 'votonegativo'});
+    alert('Nuevo voto negativo para ' + this.model.get('artist'));
+    $.get('/vote', {track_id: this.model.get('id'), operation: 'votonegativo'});
     e.preventDefault();
   },
   render: function() {
@@ -73,7 +73,7 @@ app.LatestItemView = Backbone.View.extend({
   addVote: function(e) {
     // send add vote request
     alert('Nuevo voto para ' + this.model.get('artist'));
-    $.post('/vote', {track_id: this.model.get('id'), operation: 'votopositivo'});
+    $.get('/vote', {track_id: this.model.get('id'), operation: 'votopositivo'});
     e.preventDefault();
   },
   render: function() {
@@ -116,7 +116,7 @@ app.SearchItemView = Backbone.View.extend({
   onClick: function(e) {
     // send add new song request
     alert('New song request ' + this.model.get('artist'));
-    //$.post('/newsong', {track_id: this.model.get('id'), operation: 'votopositivo'});
+    //$.get('/newsong', {track_id: this.model.get('id'), operation: 'votopositivo'});
     e.preventDefault();
   },
   render: function() {
@@ -133,7 +133,6 @@ app.SearchTracksView = Backbone.View.extend({
     this.collection = options.collection
     this.collection.on('add', this.render, this);
     this.collection.on('reset', this.render, this);
-    this.getTracks();
   },
   render: function() {
     this.$el.empty();
@@ -143,9 +142,6 @@ app.SearchTracksView = Backbone.View.extend({
       self.$el.append(searchItemView.render().el);
     });
     this.$el.hasClass('ui-listview') && this.$el.listview('refresh');
-  },
-  getTracks: function() {
-    // ajax call to retrive all songs.
   }
 });
 
@@ -154,8 +150,7 @@ app.parseMessages = function(data){
     app.currentSong.set(jsondata.top[0]);
     jsondata.top.shift();
     app.nowPlayingCollection.reset(jsondata.top);
-    app.latestCollection.reset(jsondata.latest);
-    console.log(jsondata.latest);
+    app.latestCollection.reset(jsondata.last);
 };
 
 app.init = function() {
@@ -171,6 +166,7 @@ app.init = function() {
 
   $.eventsource({label: 'base', url: 'http://192.168.10.58:8888/?channels=base', message: app.parseMessages});
 
+};
 
 $(document).ready(function() {
   app.init();

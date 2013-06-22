@@ -66,7 +66,7 @@ def update_list():
     }
     print payload
     r=requests.post("http://localhost:8888/publish", data=payload)
-    print r.status_code
+
 
     return "ok"
 

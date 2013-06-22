@@ -7,7 +7,7 @@ import time
 from time import sleep
 
 sessions = ['aaa', 'bbb', 'ccc', 'ddd', 'eee']
-operations = ['votarpositivo', 'votarnegativo']
+operations = ['votarpositivo']
 
 
 def generate_votes():

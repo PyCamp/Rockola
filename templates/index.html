@@ -12,7 +12,7 @@
 	<script src="/static/js/underscore.js"></script>
 	<script src="/static/js/backbone.js"></script>
 	<script src="/static/js/app.js"></script>
-	<script src="/static/js/rockola.js"></script>
+  <!--<script src="/static/js/rockola.js"></script>-->
 </head> 
 <body> 
     <!-- PAGE Now playing -->
@@ -115,7 +115,7 @@
     <script type="application/x-template" id="currentsongtpl">
         <li data-theme="a">
             <a href="#">
-                <h3><%= artist %> - <%= title %><span class="ui-li-count"><%= downvotes %></span></h3>
+                <h3><%= artist %> - <%= title %><span class="ui-li-count"><%= votes %></span></h3>
                 <p><small><b>Now playing</b></small></p>
             </a>
             <a href="#" class="vote-down" data-icon="minus" data-theme="b">minus</a>
