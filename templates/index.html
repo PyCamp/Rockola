@@ -98,8 +98,9 @@
     </div>
     <div data-role="content">
         <ul data-role="listview" data-filter="true" id="searchlist">
-            <li><a href="#" data-icon="plus">Arjona 1</a><a href="#" data-icon="plus"></a></li>
-            <li><a href="#" data-icon="plus">Arjona 2</a><a href="#" data-icon="plus"></a></li>
+            {% for track_id, data in songs.items() %}
+            <li><a href="#" data-icon="plus">{{track_id}} {{ data.title }} ({{ data.artist }})</a><a href="#" data-icon="plus" onclick="votar({{ track_id }}, true)"></a></li>
+            {% endfor %}
         </ul>
     </div>
     <div data-id="footer" data-position="fixed" data-role="footer">

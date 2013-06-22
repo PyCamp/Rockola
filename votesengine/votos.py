@@ -4,7 +4,7 @@
 import datetime
 from random import randint
 
-COCIENTE_CAMBIOTEMA = 0.5  # Cambia el tema si tiene 25% negativos
+COCIENTE_CAMBIOTEMA = 0.5  # Cambia el tema si tiene 50% negativos
 
 def rellenar(func):
     """ Se asegura de que haya al menos un resultado y que no tire

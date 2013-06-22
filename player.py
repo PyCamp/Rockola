@@ -1,3 +1,5 @@
+#!/urs/bin/env python
+#-*- coding: utf-8 -*-
 
 import json
 import time
@@ -61,14 +63,17 @@ class ShivaClient(object):
         data = r.read()
         return json.loads(data)
 
-    def get_tracks(self, ids):
+    def get_tracks(self, ids = None):
+        """ Retorna información de todos los tracks si ids no se
+        especifica, sino se filtra la información solamente para
+        los tracks que se encuentren en ids """
 
         tracks = self._request('tracks')
 
         response = {}
         for track in tracks:
             track_id = track['id']
-            if track_id in ids:
+            if (ids is None) or (track_id in ids):
                 track_title = track['title']
                 if track['artist'] is not None:
                     artist_id = track['artist']['id']
