@@ -56,6 +56,9 @@ class VoteEngine(object):
         self.current_votes.add_vote(vote)
         lists = self._devolverlistas()
         id_, vote = lists['top'][0]
+        if self.now_playing != self.random_list['top'][0][0]:
+            if id_ != self.now_playing:    
+                self.current_votes.delete(self.now_playing)
         self._newsong(id_)
         return lists
 
@@ -103,4 +106,5 @@ def main():
             print "Operation Not Implemented" + new_data['operation']
 
 if __name__ == '__main__':
-    main()
+    main()en(self.current_votes.votos) > 1:
+            self.now_playin
