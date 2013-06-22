@@ -36,10 +36,14 @@ class VoteEngine(object):
             self.random_list = {'top': [rand], 'last': [rand]}
             id_, vote = rand
             self._newsong(id_)
+            return self._devolverlistas()
         else:
             self.status = 'PLAYLIST'
-
-        return self._devolverlistas()
+            self.current_votes.delete(self.now_playing)
+            lists = self._devolverlistas()
+            id_, vote = lists['top'][0]
+            self._newsong(id_)
+            return lists
 
     def votarpositivo(self, vote):
         self.status = 'PLAYLIST'

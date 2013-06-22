@@ -69,23 +69,10 @@ class VoteManager(object):
         tracks = [(track, votos[track]) for track in self.tracks]
         return tracks[-10:]
 
-    def endofsong(self, track_id=None):
-        """ Elimina la canción más votada de la lista, o la canción
-        correspondiente al track_id si es especificado"""
-        if track_id is None:
-            track_id = self.head
-        try:
-            del(self.votos[track_id])
-            self.tracks.remove(track_id)
-        except KeyError:
-            pass
-        except ValueError:
-            pass
-        else:
-            try:
-                self.head = self.top()[0][0]
-            except IndexError:
-                self.head = 1
+    def delete(self, track_id):
+        del(self.votos[track_id])
+        self.tracks.remove(track_id)
+       
 
     def new_top(self):
         """ Retorna True si se debe cambiar la canción por la cantidad
