@@ -27,6 +27,7 @@ app.CurrentSongView = Backbone.View.extend({
   addVote: function(e) {
     // send add vote request
     alert('Nuevo voto negativo para ' + this.model.get('artist'));
+    $.get('/vote', {track_id: this.model.get('id'), operation: 'votarnegativo'});
     e.preventDefault();
   },
   render: function() {
@@ -50,8 +51,8 @@ app.NowPlayingView = Backbone.View.extend({
   addVote: function(e) {
     // send add vote request
     alert('Nuevo voto negativo para ' + this.model.get('artist'));
-    $.get('/vote', {track_id: this.model.get('id'), operation: 'votonegativo'});
     e.preventDefault();
+    $.get('/vote', {track_id: this.model.get('id'), operation: 'votarnegativo'});
   },
   render: function() {
     this.$el.empty();
@@ -73,7 +74,7 @@ app.LatestItemView = Backbone.View.extend({
   addVote: function(e) {
     // send add vote request
     alert('Nuevo voto para ' + this.model.get('artist'));
-    $.get('/vote', {track_id: this.model.get('id'), operation: 'votopositivo'});
+    $.get('/vote', {track_id: this.model.get('id'), operation: 'votarpositivo'});
     e.preventDefault();
   },
   render: function() {
@@ -116,7 +117,7 @@ app.SearchItemView = Backbone.View.extend({
   onClick: function(e) {
     // send add new song request
     alert('New song request ' + this.model.get('artist'));
-    //$.get('/newsong', {track_id: this.model.get('id'), operation: 'votopositivo'});
+    $.get('/vote', {track_id: this.model.get('id'), operation: 'votopositivo'});
     e.preventDefault();
   },
   render: function() {
@@ -165,6 +166,9 @@ app.init = function() {
   new app.CurrentSongView({model: app.currentSong});
 
   $.eventsource({label: 'base', url: 'http://192.168.10.58:8888/?channels=base', message: app.parseMessages});
+
+  // just in case, request all lists
+  $.get('/need_list', {operation: 'necesitolista'});
 
 };
 

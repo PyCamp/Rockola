@@ -72,3 +72,17 @@ class Queue(object):
             method, header, body = self.channel.basic_get(name)
         self.channel.basic_ack(method.delivery_tag)
         return body
+
+    def receive_no_block(self, name):
+        """
+        Non blocking method to receive a message from the queue.
+
+        :param name: The name of the desired queue.
+        :param ip: The IP of the RabbitMQ server.
+        """
+        method, header, body = self.channel.basic_get(name)
+        if method:
+            self.channel.basic_ack(method.delivery_tag)
+            return body
+        else:
+            return None

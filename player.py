@@ -8,7 +8,7 @@ from multiprocessing import Process
 from subprocess import Popen
 from urllib import urlencode
 from urllib2 import urlopen
-
+from random import sample
 from msgs_queue import queue_manager
 
 class VLCController(object):
@@ -53,7 +53,6 @@ class VLCController(object):
         if stime and length:
             return length - stime
         else:
-            print a
             return 0
 
 
@@ -62,26 +61,32 @@ class ShivaClient(object):
     PORT = '9002'
     URL = 'localhost'
     def __init__(self):
+        self.tracks = None
         self.base_url =  'http://%s:%s/' %(self.URL,self.PORT)
         self.artists = {}
         for artist in self.get_artists():
             artist_id, name = artist['id'], artist['name']
             self.artists[artist_id] = name
         self.artists[None] = ''
+        self.tracks = self._request('tracks')
 
     def _request(self, command):
-
         r = urlopen(self.base_url + command)
         data = r.read()
-        return json.loads(data)
+        tracks = json.loads(data)
+        return tracks
 
-    def get_tracks(self, ids = None):
+    def get_tracks(self, ids = None, short=False):
         """ Retorna información de todos los tracks si ids no se
         especifica, sino se filtra la información solamente para
         los tracks que se encuentren en ids """
 
-        tracks = self._request('tracks')
-
+        # Get only 50 tracks
+        if short:
+            tracks = list(self.tracks)
+            tracks = sample(tracks, 50)
+        else:
+            tracks = self.tracks
         response = {}
         for track in tracks:
             track_id = track['id']
@@ -96,7 +101,6 @@ class ShivaClient(object):
                                       'artist': artist,
                                       'path': track['files']['audio/mp3'].replace('http://127.0.0.1:8001/',
                                                                          '/home/tulku/Music/')}
-        print response
         return response
 
     def get_artists(self):
