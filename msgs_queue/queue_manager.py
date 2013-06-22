@@ -8,6 +8,7 @@ names = {'flask': 'flask_queue',
          'lists': 'lists_queue',
          'control': 'control_queue'}
 
+IP = 'localhost'
 
 def get_queue_name(queue):
     """
@@ -23,7 +24,7 @@ def get_queue_name(queue):
 class Queue(object):
 
     def __init__(self, queues=names.values(),
-                 ip='localhost'):
+                 ip=IP):
         """
         Creates a publisher class to a message queue.
 
