@@ -47,7 +47,6 @@ class VoteManager(object):
             # Si votó por lo contrario, borramos el voto anterior
             lista[not calificacion].remove(sessid)
         lista[calificacion].add(sessid)
-        if self.head == 0: self.head = track_id
 
     def votes(self):
         """ Retorna un diccionario con la cantidad de votos (puede ser
