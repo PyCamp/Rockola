@@ -33,7 +33,7 @@ class VoteManager(object):
         """ Regenera el diccionario con la cantidad de votos negativos y
         positivos de cada track_id """
         track_id = voto['id_track']
-        sessid = voto['id_sesion']
+        sessid = voto['id_session']
         calificacion = voto['operation']
         timestamp = voto['timestamp']
         calificacion = 1 if calificacion == 'votarpositivo' else 0

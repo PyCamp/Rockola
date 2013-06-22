@@ -13,12 +13,12 @@ operations = ['votarpositivo', 'votarnegativo']
 def generate_votes():
     '''Generates random votes.
        Returns a dict:
-           {"id_sesion": "abcdfg",
+           {"id_session": "abcdfg",
             "timestamp": 1389289869,
-            "id_track": 1827,
+            "id_track": 17,
             "operation": "votarpositivo"}'''
     vote_dict = {
-        'id_sesion': random.choice(sessions),
+        'id_session': random.choice(sessions),
         'timestamp': time.time(),
         'id_track': int(random.gauss(4, 1))+1,
         'operation': random.choice(operations)}
