@@ -2,6 +2,7 @@
 #-*- coding: utf-8 -*-
 
 import datetime
+import time
 from random import randint
 
 COCIENTE_CAMBIOTEMA = 0.5  # Cambia el tema si tiene 50% negativos
@@ -25,7 +26,7 @@ class VoteManager(object):
         self.votos = dict()
         self.tracks = list()  # Lista de IDs de track, en orden según aparición
         self.track_timestamp = dict()  # Timestamp con fecha en que se inserta
-        self.head = 1  # El track_id que se está reproduciendo
+        self.head = 0  # El track_id que se está reproduciendo
 
 
     def add_vote(self, voto):
@@ -46,6 +47,7 @@ class VoteManager(object):
             # Si votó por lo contrario, borramos el voto anterior
             lista[not calificacion].remove(sessid)
         lista[calificacion].add(sessid)
+        if self.head == 0: self.head = track_id
 
     def votes(self):
         """ Retorna un diccionario con la cantidad de votos (puede ser
@@ -62,10 +64,11 @@ class VoteManager(object):
         #top = sorted(self.votes().items(), key=lambda v: v[1], reverse=True)[:5]
         puntajes = dict()
         for track_id, votos in self.votes().items():
-            created = datetime.datetime.fromtimestamp(
-                    self.track_timestamp[track_id])
-            delta = datetime.datetime.now() - created
-            delta = delta.days * 24 * 3600.0 + delta.seconds  # Segundos totales
+            #created = datetime.datetime.fromtimestamp(
+            #        self.track_timestamp[track_id])
+            #delta = datetime.datetime.now() - created
+            #delta = delta.days * 24 * 3600.0 + delta.seconds  # Segundos totales
+            delta = time.time() - self.track_timestamp[track_id]
             puntaje = votos / delta if delta else 0  # Evito ZeroDivisionError
             puntajes[track_id] = puntaje
         def sortkey(val):
