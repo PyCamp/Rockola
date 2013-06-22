@@ -7,49 +7,55 @@ import json
 import requests
 from random import randint
 
-from time import sleep, time
+from time import sleep
 URL = "http://localhost:5000/"
 
 
 def play_new_song(newsong):
     """se usa para avisarle a player que reproduzca una nueva cancion"""
-    print {"song_id" : newsong}
-    requests.get(URL + "newsong", params = {"song_id" : newsong})
+    print {"song_id": newsong}
+    requests.get(URL + "newsong", params={"song_id": newsong})
     ##aca va el raise status de request
     #raise NotImplementedError()
 
 
 class VoteEngine(object):
-    
-    def __init__(self, newsongmethod = play_new_song):
+
+    def __init__(self, newsongmethod=play_new_song):
         self.status = 'IDLE'
         self.newsong = newsongmethod
         self.current_votes = votos.VoteManager()
-        self.random_list = {'top':[(randint(1,50),1)],'last':[]}
+        rand = (randint(1, 50), 1)
+        self.random_list = {'top': [rand], 'last': [rand]}
 
-    def nuevacancion(self,new_json= None):
+    def nuevacancion(self, new_json=None):
         if len(self.current_votes.votos) == 0:
             self.status = 'RANDOM'
-            self.random_list = {'top':[(randint(1,50),1)],'last':[]}
+            rand = (randint(1, 50), 1)
+            self.random_list = {'top': [rand], 'last': [rand]}
+            id_, vote = rand
+            self.newsong(id_)
         else:
             self.status = 'PLAYLIST'
-        self._devolverlistas()
-        
+
+        return self._devolverlistas()
+
     def votarpositivo(self, vote):
-        self._votos(vote) 
+        self._votos(vote)
 
-    def votarnegativo(self,vote):
-        self._votos(vote)        
+    def votarnegativo(self, vote):
+        self._votos(vote)
 
-    def _votos(self,vote):
+    def _votos(self, vote):
         self.current_votes.add_vote(vote)
-        self._devolverlistas()
+        return self._devolverlistas()
 
-    def necesitolista(self, new_json= None):
-        self._devolverlistas()
+    def necesitolista(self, new_json=None):
+        return self._devolverlistas()
 
     def _devolverlistas(self):
         if self.status == 'RANDOM':
+            print self.random_list
             return self.random_list
 
 
@@ -72,6 +78,7 @@ def main():
         operation = getattr(votesengine, new_data['operation'], None)
         if operation:
             response = operation(new_data)
+            print response
             receiver.send(lists_name, json.dumps(response))
         else:
             print "Operation Not Implemented" + new_data['operation']
