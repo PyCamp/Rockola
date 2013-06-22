@@ -61,6 +61,7 @@ class VoteEngine(object):
             top = self.current_votes.top()
             last = self.current_votes.last()
             return {'top': top, 'last': last}
+            
 
 def main():
     sleep(6)
