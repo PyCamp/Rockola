@@ -1,6 +1,5 @@
 #!/urs/bin/env python
 #-*- coding: utf-8 -*-
-
 from time import time
 from flask import json
 from flask import Flask, request
@@ -18,11 +17,15 @@ rl.run()
 
 qm = queue_manager.Queue()
 cmdq = queue_manager.get_queue_name('control')
-flaskq = queue_manager.get_queue_name('flask')
+listsq = queue_manager.get_queue_name('lists')
 
 @app.route('/')
 def home():
-    songs = shiva.get_tracks()
+    #msg = None
+    #while not msg:
+        #msg = qm.receive_no_block(listsq)
+    print 'queues empty'
+    songs = shiva.get_tracks(short=True)
     return render_template('index.html',
             songs = songs)
 
@@ -33,9 +36,18 @@ def add_song():
     return render_template('pong!')
 
 
-@app.route('/songs/latest')
-def list_latest_songs():
+@app.route('/need_list')
+def need_list():
     """List latest added songs."""
+    operation = request.args['operation']
+    timestamp = int(time())
+    id_session = request.remote_addr
+    keys = ['operation', 'timestamp', 'id_session']
+    values = [operation, timestamp, id_session]
+    data = dict(zip(keys, values))
+    msg = json.dumps(data)
+    qm.send(cmdq, msg)
+    return "ok"
 
 @app.route('/update_lists')
 def update_list():
@@ -46,10 +58,10 @@ def update_list():
     ids |= set([track_id for track_id, _ in last])
 
     tracks_info = shiva.get_tracks(ids)
-    print lists, tracks_info
+    #print lists, tracks_info
     def _fill_track_data(tracks):
         response = []
-        for track_id, votos in top:
+        for track_id, votos in tracks:
             info = tracks_info[track_id]
             response.append({'id' : track_id,
                              'title': info['title'],
@@ -66,7 +78,7 @@ def update_list():
     }
     print payload
     r=requests.post("http://localhost:8888/publish", data=payload)
-    print r.status_code
+
 
     return "ok"
 
@@ -81,7 +93,7 @@ def new_song():
 
 @app.route('/vote')
 def vote():
-    id_track = request.args['track_id']
+    id_track = int(request.args['track_id'])
     operation = request.args['operation']
     timestamp = int(time())
     id_session = request.remote_addr
