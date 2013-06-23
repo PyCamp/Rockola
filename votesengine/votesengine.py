@@ -30,13 +30,17 @@ class VoteEngine(object):
         self.now_playing = -1
 
     def nuevacancion(self, new_json=None):
-        if len(self.current_votes.votos) == 0:
+        votos = len(self.current_votes.votos)
+        if votos == 0:
             self.status = 'RANDOM'
             rand = (randint(1, 50), 1)
             self.random_list = {'top': [rand], 'last': [rand]}
             id_, vote = rand
             self._newsong(id_)
             return self._devolverlistas()
+        elif votos == 1:
+            self.status = 'RANDOM'
+            self.current_votes.delete(self.now_playing)
         else:
             self.status = 'PLAYLIST'
             self.current_votes.delete(self.now_playing)
