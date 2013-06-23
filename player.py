@@ -84,7 +84,7 @@ class ShivaClient(object):
         # Get only 50 tracks
         if short:
             tracks = list(self.tracks)
-            tracks = sample(tracks, 50)
+            tracks = sample(tracks, 100)
         else:
             tracks = self.tracks
         response = {}

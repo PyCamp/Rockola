@@ -39,7 +39,6 @@ class VoteManager(object):
         if track_id not in self.votos:
             self.votos[track_id] = [set([]), set([])]
             self.tracks.append(track_id)
-            self.tracks = self.tracks[-10:]  # Conservo los últimos elementos
             self.track_timestamp[track_id] = timestamp
         lista = self.votos[track_id]
         if sessid in lista[not calificacion]:
@@ -67,7 +66,7 @@ class VoteManager(object):
         la primera vez que fueron votados """
         votos = self.votes()
         tracks = [(track, votos[track]) for track in self.tracks]
-        return tracks[-10:]
+        return tracks[-20:]
 
     def delete(self, track_id):
         del(self.votos[track_id])
