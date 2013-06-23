@@ -28,20 +28,20 @@ class TestVotos(unittest.TestCase):
         """ La función votar debe funcionar correctamente """
         self.instanciar()
         self.votar(1)
-        self.assertEquals(self.votos.top(), [(1,1)])
+        votos = self.votos.votes()
+        self.assertEquals(votos[1], 1)
 
         self.instanciar()
         self.votar(1, False)
-        self.assertEquals(self.votos.top(), [(1,-1)])
+        votos = self.votos.votes()
+        self.assertEquals(votos[1], -1)
 
     def test_sin_votos(self):
         """ Verifica que si no hay canciones para mostrar se muestre
-        una aleatoria en el rango de 0 a 20, con 0 votos """
+        una lista vacía """
         self.instanciar()
         top = self.votos.top()
-        track_id, votos = top[0]
-        self.assertTrue(track_id > 0 and track_id <= 20)
-        self.assertEquals(votos, 0)
+        self.assertEquals(top, [])
 
     def test_ultimos(self):
         """ Testea el funcionamiento de la funcón ultimos() """
@@ -74,8 +74,8 @@ class TestVotos(unittest.TestCase):
             self.instanciar()
             for positivo in args: 
                 self.votar(1, positivo, sessid = 'a')
-            track_id, votos = self.votos.top()[0]
-            self.assertEquals(votos, esperado)
+            votos = self.votos.votes()
+            self.assertEquals(votos[1], esperado)
 
     def test_puntaje(self):
         """ Una canción más nueva con menos votos que una vieja puede
@@ -91,7 +91,8 @@ class TestVotos(unittest.TestCase):
         for i in range(10):
             self.votar(2, timestamp = timestamp_nuevo)
         top = self.votos.top()
-        self.assertEquals(top, [(3, 1000), (2, 10), (1, 20)])
+        orden = [track for track, puntaje in top]
+        self.assertEquals(orden, [3,2,1])
 
     def test_endofsong(self):
         """ Prueba que una canción se borre eficientemente de la lista

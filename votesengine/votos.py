@@ -26,8 +26,7 @@ class VoteManager(object):
         self.votos = dict()
         self.tracks = list()  # Lista de IDs de track, en orden según aparición
         self.track_timestamp = dict()  # Timestamp con fecha en que se inserta
-        self.head = 0  # El track_id que se está reproduciendo
-
+        self.head = 0
 
     def add_vote(self, voto):
         """ Regenera el diccionario con la cantidad de votos negativos y
@@ -47,7 +46,6 @@ class VoteManager(object):
             # Si votó por lo contrario, borramos el voto anterior
             lista[not calificacion].remove(sessid)
         lista[calificacion].add(sessid)
-        if self.head == 0: self.head = track_id
 
     def votes(self):
         """ Retorna un diccionario con la cantidad de votos (puede ser
@@ -57,61 +55,24 @@ class VoteManager(object):
             dicc[track] = len(lista[1]) - len(lista[0])  # positivos - negativos
         return dicc
 
-    #@rellenar
+
     def top(self):
         """ Retorna una lista ordenada con tuplas que contienen el
         track_id y su puntaje """
-        #top = sorted(self.votes().items(), key=lambda v: v[1], reverse=True)[:5]
-        puntajes = dict()
-        for track_id, votos in self.votes().items():
-            #created = datetime.datetime.fromtimestamp(
-            #        self.track_timestamp[track_id])
-            #delta = datetime.datetime.now() - created
-            #delta = delta.days * 24 * 3600.0 + delta.seconds  # Segundos totales
-            delta = time.time() - self.track_timestamp[track_id]
-            puntaje = votos / delta if delta else 0  # Evito ZeroDivisionError
-            puntajes[track_id] = puntaje
-        def sortkey(val):
-            track_id, votes = val
-            if track_id == self.head:
-                # Se está reproduciendo
-                return 0.99999999
-            else:
-                return puntajes[track_id]
-        top = sorted(self.votes().items(), key=sortkey, reverse=True)
-        top = [(track_id, int(100 * puntajes[track_id])) for track_id, votos in top]
-        try:
-            if self.head == 1:
-                # Solo si está el head por defecto
-                self.head = top[0][0]
-        except KeyError:
-            pass
-        return top[:5]
+        top = sorted(self.votes().items(), key=lambda v: v[1], reverse=True)[:5]
+        return top
 
-    def ultimos(self):
+    def last(self):
         """ Retorna una lista de tuplas track/puntaje ordenadas según
         la primera vez que fueron votados """
         votos = self.votes()
         tracks = [(track, votos[track]) for track in self.tracks]
         return tracks[-10:]
 
-    def endofsong(self, track_id=None):
-        """ Elimina la canción más votada de la lista, o la canción
-        correspondiente al track_id si es especificado"""
-        if track_id is None:
-            track_id = self.head
-        try:
-            del(self.votos[track_id])
-            self.tracks.remove(track_id)
-        except KeyError:
-            pass
-        except ValueError:
-            pass
-        else:
-            try:
-                self.head = self.top()[0][0]
-            except IndexError:
-                self.head = 1
+    def delete(self, track_id):
+        del(self.votos[track_id])
+        self.tracks.remove(track_id)
+       
 
     def new_top(self):
         """ Retorna True si se debe cambiar la canción por la cantidad
