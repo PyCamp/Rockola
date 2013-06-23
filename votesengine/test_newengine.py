@@ -89,20 +89,21 @@ class TestVotesEngine(unittest.TestCase):
     def test_doblecancion(self):
         """ Una canción puede llegar a sonar dos veces si la vuelven
         a votar """
-        self.votar(5)
+        self.votar(6)
+        self.votar(6)
+        self.votar(6)
         #self.engine.nuevacancion() # Suena la 5
-        self.assertEquals(self.engine.now_playing, 5)
+        self.assertEquals(self.engine.now_playing, 6)
 
-        self.votar(8)
-        print self.engine._devolverlistas()['top']
-        self.assertEquals(self.engine.now_playing, 5)
-        print 342
+        self.votar(7)
+        self.votar(7)
+        self.assertEquals(self.engine.now_playing, 6)
         self.engine.nuevacancion() # Suena la 8
-        self.assertEquals(self.engine.now_playing, 8)
+        self.assertEquals(self.engine.now_playing, 7)
 
-        self.votar(5)
+        self.votar(6)
         self.engine.nuevacancion() # Suena la 5 de nuevo
-        self.assertEquals(self.engine.now_playing, 5)
+        self.assertEquals(self.engine.now_playing, 6)
 
     def test_nowplaying(self):
         """ El engine.now_playing debe funcionar correctamente """
@@ -113,14 +114,13 @@ class TestVotesEngine(unittest.TestCase):
     def test_muchascanciones(self):
         """ Hay votos para 5 canciones diferentes, tendrían que 
         sonar en orden """
-        self.votar(999)
-        for i in range(1,5):
+        for i in [4,3,2,1]:
             for j in range(i):
                 self.votar(i)
-        self.engine.nuevacancion()
-        for i in [5,4,3,2,1]:
-             self.assertEquals(self.engine.now_playing, i)
-             self.engine.nuevacancion()
+        self.assertEquals(self.engine.now_playing, 4)
+        for i in [4,3,2,1]:
+            self.assertEquals(self.engine.now_playing, i)
+            self.engine.nuevacancion()
 
     def test_cancionsuperada(self):
         """ Si una canción obtiene más votos de la que se está 
@@ -132,9 +132,9 @@ class TestVotesEngine(unittest.TestCase):
         self.assertEquals(self.engine.now_playing, 6)
 
     def test_cancionnosuperada(self):
-        self.votar(5)
-        self.votar(8)
-        self.assertEquals(self.engine.now_playing, 5)
+        self.votar(6)
+        self.votar(7)
+        self.assertEquals(self.engine.now_playing, 6)
 
 
 if __name__ == '__main__':
