@@ -80,7 +80,7 @@
         <div data-role="content">
             <ul data-role="listview" data-filter="true" id="searchlist">
                 {% for track_id, data in songs.items() %}
-                <li><a href="#" data-icon="plus">{{track_id}} {{ data.title }} ({{ data.artist }})</a><a href="#" data-icon="plus" onclick="votar({{ track_id }}, true)"></a></li>
+                <li><a href="#" data-icon="plus">{{track_id}} {{ data.title }} ({{ data.artist }})</a><a href="#" data-icon="plus" onclick="votar({{ track_id }}, true, this)"></a></li>
                 {% endfor %}
             </ul>
         </div>
