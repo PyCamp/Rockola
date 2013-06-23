@@ -60,34 +60,10 @@ class VoteManager(object):
     def top(self):
         """ Retorna una lista ordenada con tuplas que contienen el
         track_id y su puntaje """
-        #top = sorted(self.votes().items(), key=lambda v: v[1], reverse=True)[:5]
-        puntajes = dict()
-        for track_id, votos in self.votes().items():
-            #created = datetime.datetime.fromtimestamp(
-            #        self.track_timestamp[track_id])
-            #delta = datetime.datetime.now() - created
-            #delta = delta.days * 24 * 3600.0 + delta.seconds  # Segundos totales
-            delta = time.time() - self.track_timestamp[track_id]
-            puntaje = votos / delta if delta else 0  # Evito ZeroDivisionError
-            puntajes[track_id] = puntaje
-        def sortkey(val):
-            track_id, votes = val
-            if track_id == self.head:
-                # Se está reproduciendo
-                return 99999
-            else:
-                return puntajes[track_id]
-        top = sorted(self.votes().items(), key=sortkey, reverse=True)
-        top = [(track_id, int(100 * puntajes[track_id])) for track_id, votos in top]
-        try:
-            if self.head == 1:
-                # Solo si está el head por defecto
-                self.head = top[0][0]
-        except KeyError:
-            pass
-        return top[:5]
+        top = sorted(self.votes().items(), key=lambda v: v[1], reverse=True)[:5]
+        return top
 
-    def ultimos(self):
+    def last(self):
         """ Retorna una lista de tuplas track/puntaje ordenadas según
         la primera vez que fueron votados """
         votos = self.votes()

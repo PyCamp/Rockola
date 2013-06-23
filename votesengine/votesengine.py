@@ -41,10 +41,10 @@ class VoteEngine(object):
         return self._devolverlistas()
 
     def votarpositivo(self, vote):
-        self._votos(vote)
+        return self._votos(vote)
 
     def votarnegativo(self, vote):
-        self._votos(vote)
+        return self._votos(vote)
 
     def _votos(self, vote):
         self.current_votes.add_vote(vote)
@@ -56,7 +56,11 @@ class VoteEngine(object):
     def _devolverlistas(self):
         if self.status == 'RANDOM':
             return self.random_list
-
+        elif self.status == 'PLAYLIST':
+            top = self.current_votes.top()
+            last = self.current_votes.last()
+            return {'top': top, 'last': last}
+            
 
 def main():
     sleep(6)
