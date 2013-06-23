@@ -28,7 +28,7 @@ class VoteEngine(object):
         self.random_list = None         
 
     def nuevacancion(self,new_json= None):
-        if len(self.current_votos.votos) == 0:
+        if len(self.current_votes.votos) == 0:
             self.status = 'RANDOM'
             self.random_list = {'top':[(randint(1,50),1)],'last':[]}
         else:
