@@ -7,7 +7,7 @@
     //}, false);
 //});
 
-function votar(track_id, positivo) {
+function votar(track_id, positivo, lielem) {
     if (positivo)
     {
         action = 'votarpositivo'
@@ -16,6 +16,8 @@ function votar(track_id, positivo) {
     }
     url = '/vote?track_id=' + track_id + '&operation=' + action;
     console.log(url);
+    console.log(lielem);
+    $(lielem).attr('data-theme', 'e');
     $.ajax({url: url});
 }
 
