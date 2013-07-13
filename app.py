@@ -7,6 +7,8 @@ from flask import render_template
 from msgs_queue import queue_manager
 from player import ShivaClient, VLCController
 import requests
+import socket
+import commands
 from msgs_queue.receive_list_process import ReceiveListProcess
 app = Flask(__name__)
 
@@ -19,15 +21,21 @@ qm = queue_manager.Queue()
 cmdq = queue_manager.get_queue_name('control')
 listsq = queue_manager.get_queue_name('lists')
 
+
 @app.route('/')
 def home():
     #msg = None
     #while not msg:
         #msg = qm.receive_no_block(listsq)
     print 'queues empty'
+    output = commands.getoutput("/sbin/ifconfig")
+    while (output[output.find("inet add")+10:output.find("  Mask")] == '127.0.0.1'):
+	output = output[output.find("Mask")+4:]
+    myip = output[output.find("inet add")+10:output.find("  Bcast")]
+
     songs = shiva.get_tracks(short=True)
     return render_template('index.html',
-            songs = songs)
+            songs = songs, myip = myip)
 
 
 @app.route('/songs/add')
